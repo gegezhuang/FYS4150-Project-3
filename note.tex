@@ -1,0 +1,39 @@
+\documentclass[english]{article}
+
+\usepackage{amsmath}
+
+\begin{document}
+
+\section*{Oppgave 1}
+\begin{align}
+m \dot r &= qE + q\dot r \times B \\
+m \dot r &= q(- \nabla V) + q\dot r \times B_0 \hat{e}_z \\
+m \dot r &= q \frac{V_0}{2d^2} \begin{pmatrix} -2x \\ -2y \\ 4z \end{pmatrix}
+          + q \begin{pmatrix} \dot y B_0 \\ -\dot x B_0 \\ 0 \end{pmatrix} \\
+m \dot r &=
+    \begin{pmatrix} 
+        - q \frac{V_0}{d^2} x + q \dot y B_0 \\
+        - q \frac{V_0}{d^2} y - q \dot x B_0 \\
+        q \frac{V_0}{d^2} 2z \\
+    \end{pmatrix}
+\end{align}
+
+\section*{Oppgave 2}
+\begin{align}
+f(t) &= x(t) + iy(t) \\
+\dot f(t) &= \dot x(t) + i \dot y(t) \\
+\ddot f(t) &= \ddot x(t) + i \ddot y(t)
+\end{align}
+
+\begin{align}
+\ddot x - \omega_0 \dot y + \frac{1}{2} \omega_z^2 x &= 0 \\
+\left( \ddot f - i \ddot y \right) - \omega_0 \left( \frac{\dot f \dot x}{i} \right) + \frac{1}{2} \omega_z^2 \left( f - iy \right) &= 0 \\
+\ddot f - i \left( - \omega_0 \dot x + \frac{1}{2} \omega_z^2 y \right) + i \omega_0 \dot f \dot x + \frac{1}{2} \omega_z^2 \left( f - iy \right) &= 0 \\
+\ddot f + i \omega_0 \dot x - \omega_0 \dot x + \frac{1}{2} \omega_z^2 i y - \frac{1}{2} \omega_z^2 i y + i \omega_0 \dot f - \frac{1}{2} \omega_z^2 f &= 0 \\
+\ddot f + i \omega_0 \dot f - \frac{1}{2} \omega_z^2 f &= 0
+\end{align}
+
+\section*{Oppgave 3}
+$\text{Re}(-i\omega_\pm) \leq 0$
+
+\end{document}
