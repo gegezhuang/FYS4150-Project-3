@@ -4,71 +4,83 @@
 # .SILENT:
 # endif
 
+### List of all plots and data used directly in project.tex ###
+ALL_TARGET_FILES = plots/some_plot.pdf
+
+### Files used for compiling C++ or latex ###
+HEADERS := $(wildcard include/*.hpp)
+SOURCES := $(wildcard src/*.cpp)
+TEX_FILES = $(wildcard latex/*.tex)
+
+###  ###
 CXX ?= g++
+PYTHON ?= python3.9
 
-# path #
-SRC_PATH = src
-BUILD_PATH = build
-BIN_PATH = $(BUILD_PATH)/bin
+### C++ flags ###
+GENERAL_FLAGS = -std=c++11 -larmadillo
+DEBUG_FLAGS = -Wall -Wextra -g
+INCLUDES = -I include
 
-# executable # 
-BIN_NAME = runner
+### Compiling C++ files ###
+debug: main.cpp $(HEADERS) $(SOURCES)
+	$(CXX) main.cpp $(SOURCES) $(INCLUDES) -o debug $(GENERAL_FLAGS) $(DEBUG_FLAGS)
+	gdb --args ./debug
 
-# extensions #
-SRC_EXT = cpp
+main: main.cpp $(HEADERS) $(SOURCES)
+	$(CXX) main.cpp $(SOURCES) $(INCLUDES) -o main $(GENERAL_FLAGS)
 
-# code lists #
-# Find all source files in the source directory, sorted by
-# most recently modified
-SOURCES = $(shell find $(SRC_PATH) -name '*.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
-# Set the object file names, with the source directory stripped
-# from the path, and the build path prepended in its place
-OBJECTS = $(SOURCES:$(SRC_PATH)/%.$(SRC_EXT)=$(BUILD_PATH)/%.o)
-# Set the dependency files that will be used to add header dependencies
-DEPS = $(OBJECTS:.o=.d)
+test: test.cpp $(HEADERS) $(SOURCES)
+	$(CXX) test.cpp $(SOURCES) $(INCLUDES) -o test $(GENERAL_FLAGS)
+	./test
 
-# flags #
-COMPILE_FLAGS = -std=c++11 -Wall -Wextra -g
-INCLUDES = -I include/ -I /usr/local/include
-# Space-separated pkg-config libraries used by this project
-LIBS = -larmadillo
+### Creating folders ###
+plots:
+	mkdir plots
 
-.PHONY: default_target
-default_target: release
+data:
+	mkdir data
 
-.PHONY: release
-release: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS)
-release: dirs
-	@$(MAKE) all
+### Managing virtual python environment ###
+venv:
+	$(PYTHON) -m venv venv
+	(source venv/bin/activate)
+	pip install -r requirements.txt
 
-.PHONY: dirs
-dirs:
-	@mkdir -p $(dir $(OBJECTS))
-	@mkdir -p $(BIN_PATH)
+.PHONY: activate_venv
+activate_venv: venv
+	(source venv/bin/activate)
+
+### Compile pdf from LaTeX ###
+project.pdf: $(ALL_TARGET_FILES) $(TEX_FILES)
+	cd latex && pdflatex main.tex && bibtex main && pdflatex main.tex && pdflatex main.tex
+	mv latex/main.pdf project.pdf
+
+### General commands ###
+.PHONY: all
+all: clean project.pdf
 
 .PHONY: clean
 clean:
-	@echo "Deleting $(BIN_NAME) symlink"
-	@$(RM) $(BIN_NAME)
-	@echo "Deleting directories"
-	@$(RM) -r $(BUILD_PATH)
-	@$(RM) -r $(BIN_PATH)
+	@echo "Deleting compiled files, as well as the data, plots and venv folders"
+	@rm -f main
+	@rm -f test
+	@rm -f debug
+	@rm -f -rf data
+	@rm -f -rf plots
+	@rm -f -rf venv
+	@rm -f latex/main.log
+	@rm -f latex/main.aux
+	@rm -f latex/texput.log
+	@rm -f latex/main.out
+	@rm -f latex/main.bbl
+	@rm -f latex/main.blg
+	@rm -f latex/mainNotes.bib
+	@rm -f latex/amsmath.aux
 
-# checks the executable and symlinks to the output
-.PHONY: all
-all: $(BIN_PATH)/$(BIN_NAME)
-	@$(RM) $(BIN_NAME)
-	@ln -s $(BIN_PATH)/$(BIN_NAME) $(BIN_NAME)
+### Data ###
+data/some_data.csv: data main
+	touch data/some_data.csv
 
-# Creation of the executable
-$(BIN_PATH)/$(BIN_NAME): $(OBJECTS)
-	$(CXX) $(OBJECTS) -o $@ ${LIBS}
-
-# Add dependency files, if they exist
--include $(DEPS)
-
-# Source file rules
-# After the first compilation they will be joined with the rules from the
-# dependency files to provide header dependencies
-$(BUILD_PATH)/%.o: $(SRC_PATH)/%.$(SRC_EXT)
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
+### Plots ###
+plots/some_plot.pdf: activate_venv plots data/some_data.csv
+	touch plots/some_plot.pdf

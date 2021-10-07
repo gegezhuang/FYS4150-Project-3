@@ -36,3 +36,6 @@ compile_commands.json
 *.exe
 *.out
 *.app
+
+# Mac specific
+.DS_Store

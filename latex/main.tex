@@ -1,0 +1,105 @@
+%% USEFUL LINKS:
+%% -------------
+%%
+%% - UiO LaTeX guides:          https://www.mn.uio.no/ifi/tjenester/it/hjelp/latex/
+%% - Mathematics:               https://en.wikibooks.org/wiki/LaTeX/Mathematics
+%% - Physics:                   https://ctan.uib.no/macros/latex/contrib/physics/physics.pdf
+%% - Basics of Tikz:            https://en.wikibooks.org/wiki/LaTeX/PGF/Tikz
+%% - All the colors!            https://en.wikibooks.org/wiki/LaTeX/Colors
+%% - How to make tables:        https://en.wikibooks.org/wiki/LaTeX/Tables
+%% - Code listing styles:       https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+%% - \includegraphics           https://en.wikibooks.org/wiki/LaTeX/Importing_Graphics
+%% - Learn more about figures:  https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions
+%% - Automagic bibliography:    https://en.wikibooks.org/wiki/LaTeX/Bibliography_Management  (this one is kinda difficult the first time)
+%%
+%%                              (This document is of class "revtex4-1", the REVTeX Guide explains how the class works)
+%%   REVTeX Guide:              http://www.physics.csbsju.edu/370/papers/Journal_Style_Manuals/auguide4-1.pdf
+%%
+%% COMPILING THE .pdf FILE IN THE LINUX IN THE TERMINAL
+%% ----------------------------------------------------
+%%
+%% [terminal]$ pdflatex report_example.tex
+%%
+%% Run the command twice, always.
+%%
+%% When using references, footnotes, etc. you should run the following chain of commands:
+%%
+%% [terminal]$ pdflatex report_example.tex
+%% [terminal]$ bibtex report_example
+%% [terminal]$ pdflatex report_example.tex
+%% [terminal]$ pdflatex report_example.tex
+%%
+%% This series of commands can of course be gathered into a single-line command:
+%% [terminal]$ pdflatex report_example.tex && bibtex report_example.aux && pdflatex report_example.tex && pdflatex report_example.tex
+%%
+%% ----------------------------------------------------
+
+
+\documentclass[english,notitlepage,reprint,nofootinbib]{revtex4-1}  % defines the basic parameters of the document
+% For preview: skriv i terminal: latexmk -pdf -pvc filnavn
+% If you want a single-column, remove "reprint"
+
+% Allows special characters (including æøå)
+\usepackage[utf8]{inputenc}
+% \usepackage[english]{babel}
+
+%% Note that you may need to download some of these packages manually, it depends on your setup.
+%% I recommend downloading TeXMaker, because it includes a large library of the most common packages.
+
+\usepackage{physics,amssymb}  % mathematical symbols (physics imports amsmath)
+\include{amsmath}
+\usepackage{graphicx}         % include graphics such as plots
+\usepackage{xcolor}           % set colors
+\usepackage{hyperref}         % automagic cross-referencing
+\usepackage{listings}         % display code
+\usepackage{subfigure}        % imports a lot of cool and useful figure commands
+% \usepackage{float}
+%\usepackage[section]{placeins}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usetikzlibrary{quantikz}
+% defines the color of hyperref objects
+% Blending two colors:  blue!80!black  =  80% blue and 20% black
+\hypersetup{ % this is just my personal choice, feel free to change things
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}}
+
+
+% ===========================================
+
+
+\begin{document}
+
+\title{Simulation of a penning trap}
+\author{Simon Halstensen, Carl Fredrik Nordbø, Herman Brunborg \& Didrik Sten Ingebrigtsen}
+\date{\today}
+\noaffiliation                            % ignore this, but keep it.
+
+\begin{abstract}
+\input{01abstract.tex}
+\end{abstract}
+\maketitle
+
+\section{Introduction}
+\input{02introduction.tex}
+
+\section{Methods}\label{sec:methods}
+\input{03methods.tex}
+
+\section{Results and discussion}\label{sec:results}
+\input{04results.tex}
+
+\section{Conclusion}\label{sec:conclusion}
+\input{05conclusion.tex}
+
+\onecolumngrid
+
+%\bibliographystyle{apalike}
+\bibliography{ref}
+
+
+\end{document}
