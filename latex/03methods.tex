@@ -1,0 +1,82 @@
+We model the particles being trapped inside the Penning trap with ordinary differential equations (ODEs) derived from foundational physics equations. Let us quickly go through them here, before using them to argue our model is valid. The first of these equations is Newton's second law (\ref{eq:fun_newton}), which we use to say something about how our particles' velocity is changed in relation to outside forces.
+%
+\begin{equation}
+\label{eq:fun_newton}
+m \ddot r = \sum_i F_i
+\end{equation}
+%
+Next comes Coloumb's law (\ref{eq:fun_coloumb}), that describes how electrically charged particles interact. Here, $k_e$ is Couloumb's constant.
+%
+\begin{equation}
+\label{eq:fun_coloumb}
+E = k_e \sum_{j=1}n q_j \frac{r - r_j}{\abs{r - r_j}^3}
+\end{equation}
+%
+Electric fields and potential are related through (\ref{eq:fun_field_potential}).
+\begin{equation}
+\label{eq:fun_field_potential}
+E = - \nabla V
+\end{equation}
+%
+Lastly, the Lorentz force (\ref{eq:fun_lorentz}) is the force acting on a charged particle moving through an electrical and magnetic field.
+%
+\begin{equation}
+\label{eq:fun_lorentz}
+F = qE + qv \times B 
+\end{equation}
+
+%%% ^^^^^^^^^^^^^^^^^^^ DISKUSJON OM AVSNITTENE OVER HER ^^^^^^^^^^^^^^^^^^^ %%%
+% Burde vi her gå i større detalj og forklare hva alle variablene er (Didrik lener mot ja)?
+% Og burde vi droppe hele denne greien? Eller eventuelt flytte den til en appendiks?
+%%% ------------------------------------------------------------------------ %%%
+
+In addition to these fundamental equations, we have two equations describing how an idealized Penning trap work, that we need to use for our model as well. The electric potential inside the trap is defined by (\ref{eq:potential}), where $V_0$ is the potential applied at the terminals, and $d$ is the characteristic distance, a dimensionless size.
+%
+\begin{equation}
+\label{eq:potential}
+V(x, y, z) = \frac{V_0}{2d^2}(2z^2 - x^2 - y^2)
+\end{equation}
+%
+In addition to the electrical field that the last equation described, the magnetic field in the trap is defined as in (\ref{eq:b_field}).
+%
+\begin{equation}
+\label{eq:b_field}
+B = B_0 \hat{e}_z = (0, 0, B_0)
+\end{equation}
+
+%%% ------------------------------------------------------------------------ %%%
+% Har ikke ført inn disse avsnittene ordentlig med forklaringer og sånn, bare 
+% kopiert fra notes.tex som vi satte dem inn i etter fellesøkten.
+%%% vvvvvvvvvvvvvvvvvvv DISKUSJON OM AVSNITTENE UNDER HER vvvvvvvvvvvvvvvvvv %%%
+
+\section*{Oppgave 1}
+\begin{align}
+m \dot r &= qE + q\dot r \times B \\
+m \dot r &= q(- \nabla V) + q\dot r \times B_0 \hat{e}_z \\
+m \dot r &= q \frac{V_0}{2d^2} \begin{pmatrix} -2x \\ -2y \\ 4z \end{pmatrix}
+          + q \begin{pmatrix} \dot y B_0 \\ -\dot x B_0 \\ 0 \end{pmatrix} \\
+m \dot r &=
+    \begin{pmatrix} 
+        - q \frac{V_0}{d^2} x + q \dot y B_0 \\
+        - q \frac{V_0}{d^2} y - q \dot x B_0 \\
+        q \frac{V_0}{d^2} 2z \\
+    \end{pmatrix}
+\end{align}
+
+\section*{Oppgave 2}
+\begin{align}
+f(t) &= x(t) + iy(t) \\
+\dot f(t) &= \dot x(t) + i \dot y(t) \\
+\ddot f(t) &= \ddot x(t) + i \ddot y(t)
+\end{align}
+
+\begin{align}
+\ddot x - \omega_0 \dot y + \frac{1}{2} \omega_z^2 x &= 0 \\
+\left( \ddot f - i \ddot y \right) - \omega_0 \left( \frac{\dot f \dot x}{i} \right) + \frac{1}{2} \omega_z^2 \left( f - iy \right) &= 0 \\
+\ddot f - i \left( - \omega_0 \dot x + \frac{1}{2} \omega_z^2 y \right) + i \omega_0 \dot f \dot x + \frac{1}{2} \omega_z^2 \left( f - iy \right) &= 0 \\
+\ddot f + i \omega_0 \dot x - \omega_0 \dot x + \frac{1}{2} \omega_z^2 i y - \frac{1}{2} \omega_z^2 i y + i \omega_0 \dot f - \frac{1}{2} \omega_z^2 f &= 0 \\
+\ddot f + i \omega_0 \dot f - \frac{1}{2} \omega_z^2 f &= 0
+\end{align}
+
+\section*{Oppgave 3}
+$\text{Re}(-i\omega_\pm) \leq 0$
