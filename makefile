@@ -49,8 +49,8 @@ activate_venv: venv
 
 ### Compile pdf from LaTeX ###
 project.pdf: $(all_target_files)
-	cd latex && pdflatex project.tex && pdflatex project.tex
-	mv latex/project.pdf project.pdf
+	cd latex && pdflatex main.tex && bibtex main && pdflatex main.tex && pdflatex main.tex
+	mv latex/main.pdf project.pdf
 
 ### General commands ###
 .PHONY: all
