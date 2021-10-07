@@ -12,6 +12,8 @@ HEADERS := $(wildcard include/*.hpp)
 SOURCES := $(wildcard src/*.cpp)
 
 CXX ?= g++
+PYTHON ?= python3.9
+
 GENERAL_FLAGS = -std=c++11 -larmadillo
 DEBUG_FLAGS = -Wall -Wextra -g
 INCLUDES = -I include
@@ -37,7 +39,7 @@ data:
 
 ### Managing virtual python environment ###
 venv:
-	python3.9 -m venv venv
+	$(python) -m venv venv
 	(source venv/bin/activate)
 	pip install -r requirements.txt
 
