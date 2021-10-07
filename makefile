@@ -7,27 +7,30 @@
 ### List of all plots and data used directly in project.tex ###
 ALL_TARGET_FILES = plots/some_plot.pdf
 
-### C++ compiling variables ###
+### Files used for compiling C++ or latex ###
 HEADERS := $(wildcard include/*.hpp)
 SOURCES := $(wildcard src/*.cpp)
+TEX_FILES = $(wildcard latex/*.tex)
 
+###  ###
 CXX ?= g++
 PYTHON ?= python3.9
 
+### C++ flags ###
 GENERAL_FLAGS = -std=c++11 -larmadillo
 DEBUG_FLAGS = -Wall -Wextra -g
 INCLUDES = -I include
 
 ### Compiling C++ files ###
-debug: src/main.cpp $(HEADERS) $(SOURCES)
-	$(CXX) src/main.cpp $(SOURCES) $(INCLUDES) -o debug $(GENERAL_FLAGS) $(DEBUG_FLAGS)
+debug: main.cpp $(HEADERS) $(SOURCES)
+	$(CXX) main.cpp $(SOURCES) $(INCLUDES) -o debug $(GENERAL_FLAGS) $(DEBUG_FLAGS)
 	gdb --args ./debug
 
-main: src/main.cpp $(HEADERS) $(SOURCES)
-	$(CXX) src/main.cpp $(SOURCES) $(INCLUDES) -o main $(GENERAL_FLAGS)
+main: main.cpp $(HEADERS) $(SOURCES)
+	$(CXX) main.cpp $(SOURCES) $(INCLUDES) -o main $(GENERAL_FLAGS)
 
-test: src/test.cpp $(HEADERS) $(SOURCES)
-	$(CXX) src/test.cpp $(SOURCES) $(INCLUDES) -o test $(GENERAL_FLAGS)
+test: test.cpp $(HEADERS) $(SOURCES)
+	$(CXX) test.cpp $(SOURCES) $(INCLUDES) -o test $(GENERAL_FLAGS)
 	./test
 
 ### Creating folders ###
@@ -39,7 +42,7 @@ data:
 
 ### Managing virtual python environment ###
 venv:
-	$(python) -m venv venv
+	$(PYTHON) -m venv venv
 	(source venv/bin/activate)
 	pip install -r requirements.txt
 
@@ -48,7 +51,7 @@ activate_venv: venv
 	(source venv/bin/activate)
 
 ### Compile pdf from LaTeX ###
-project.pdf: $(all_target_files)
+project.pdf: $(ALL_TARGET_FILES) $(TEX_FILES)
 	cd latex && pdflatex main.tex && bibtex main && pdflatex main.tex && pdflatex main.tex
 	mv latex/main.pdf project.pdf
 
@@ -76,8 +79,8 @@ clean:
 
 ### Data ###
 data/some_data.csv: data main
-	./main some_data
+	touch data/some_data.csv
 
 ### Plots ###
 plots/some_plot.pdf: activate_venv plots data/some_data.csv
-	python src/plot_some_plot.py
+	touch plots/some_plot.pdf
