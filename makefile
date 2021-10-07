@@ -65,11 +65,13 @@ clean:
 	@rm -f -rf data
 	@rm -f -rf plots
 	@rm -f -rf venv
-	@rm -f latex/project.log
-	@rm -f latex/project.aux
+	@rm -f latex/main.log
+	@rm -f latex/main.aux
 	@rm -f latex/texput.log
-	@rm -f latex/project.out
-	@rm -f latex/projectNotes.bib
+	@rm -f latex/main.out
+	@rm -f latex/main.bbl
+	@rm -f latex/main.blg
+	@rm -f latex/mainNotes.bib
 	@rm -f latex/amsmath.aux
 
 ### Data ###
