@@ -1,11 +1,11 @@
-# FYS4150-Project-3
+# FYS4150 Project 3
 
 # Usage
 
 ## During development
-To debug, use `make debug`. This will compile `src/main.cpp` with some extra flags, and open gdb to see where things went wrong.
+To debug, use `make debug`. This will compile main.cpp` with some extra flags, and open gdb to see where things went wrong.
 
-If you want to test all the tests in `src/test.cpp`, run `make test`.
+If you want to test all the tests in `test.cpp`, run `make test`.
 
 If you want to compile the pdf, use `make project.pdf`, and if you want to force everything to remake, just use `make`.
 
