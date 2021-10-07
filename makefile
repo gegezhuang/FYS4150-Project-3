@@ -12,7 +12,7 @@ HEADERS := $(wildcard include/*.hpp)
 SOURCES := $(wildcard src/*.cpp)
 TEX_FILES = $(wildcard latex/*.tex)
 
-###  ###
+### C++ compiler and python runner ###
 CXX ?= g++
 PYTHON ?= python3.9
 
