@@ -43,7 +43,7 @@ venv:
 	(source venv/bin/activate)
 	pip install -r requirements.txt
 
-.PHONY activate_venv
+.PHONY: activate_venv
 activate_venv: venv
 	(source venv/bin/activate)
 
