@@ -10,10 +10,11 @@ class PenningTrap {
 
     public:
         PenningTrap(double magnetic_field_strength, double applied_potential,
-         double characteristic_dimension);
+        double characteristic_dimension);
         void add_particle(Particle p);
         arma::vec external_E_field(arma::vec r);
-        arma::vec external_B_field(arma::vec r); // TODO: What is this?
+        arma::vec external_B_field(arma::vec r);
+        arma::vec force_particle(int i, int j);
 };
 
 #endif
