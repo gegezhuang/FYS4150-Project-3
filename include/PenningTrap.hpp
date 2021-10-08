@@ -14,6 +14,8 @@ class PenningTrap {
         void add_particle(Particle p);
         arma::vec external_E_field(arma::vec r);
         arma::vec external_B_field(arma::vec r); // TODO: What is this?
+        void evolve_RK4(double dt);
+        void evolve_forward_Euler(double dt);
 };
 
 #endif
