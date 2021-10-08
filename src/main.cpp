@@ -13,7 +13,5 @@ int main() {
     pt.add_particle(a);
     pt.add_particle(b);
 
-    pt.run();
-
     return 0;
 }
