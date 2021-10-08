@@ -55,6 +55,9 @@ project.pdf: $(ALL_TARGET_FILES) $(TEX_FILES)
 	cd latex && pdflatex main.tex && bibtex main && pdflatex main.tex && pdflatex main.tex
 	mv latex/main.pdf project.pdf
 
+preview: $(TEX_FILES)
+	cd latex && latexmk -pdf -pvc main.tex
+
 ### General commands ###
 .PHONY: all
 all: clean project.pdf
@@ -65,6 +68,7 @@ clean:
 	@rm -f main
 	@rm -f test
 	@rm -f debug
+	@rm -f latex/main.pdf
 	@rm -f -rf data
 	@rm -f -rf plots
 	@rm -f -rf venv
