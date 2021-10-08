@@ -1,6 +1,6 @@
 #include <iostream>
 #include <armadillo>
-#include "Particle.hpp"
+#include "project3/Particle.hpp"
 
 
 Particle::Particle(double charge, double mass, arma::vec position, arma::vec velocity) {
