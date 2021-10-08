@@ -37,46 +37,69 @@ In addition to these fundamental equations, we have two equations describing how
 V(x, y, z) = \frac{V_0}{2d^2}(2z^2 - x^2 - y^2)
 \end{equation}
 %
-In addition to the electrical field that the last equation described, the magnetic field in the trap is defined as in (\ref{eq:b_field}).
+The magnetic field in the trap is defined as in (\ref{eq:magnetic}).
 %
 \begin{equation}
-\label{eq:b_field}
+\label{eq:magnetic}
 B = B_0 \hat{e}_z = (0, 0, B_0)
 \end{equation}
 
-%%% ------------------------------------------------------------------------ %%%
-% Har ikke ført inn disse avsnittene ordentlig med forklaringer og sånn, bare 
-% kopiert fra notes.tex som vi satte dem inn i etter fellesøkten.
-%%% vvvvvvvvvvvvvvvvvvv DISKUSJON OM AVSNITTENE UNDER HER vvvvvvvvvvvvvvvvvv %%%
-
-\section*{Oppgave 1}
-\begin{align}
-m \dot r &= qE + q\dot r \times B \\
-m \dot r &= q(- \nabla V) + q\dot r \times B_0 \hat{e}_z \\
-m \dot r &= q \frac{V_0}{2d^2} \begin{pmatrix} -2x \\ -2y \\ 4z \end{pmatrix}
+With these equations, we can start to model how particles would behave in proximity of or inside the trap. Using (\ref{eq:fun_newton}) and (\ref{eq:fun_lorentz}), and then inserting the properties of our electrical (\ref{eq:potential}) and magnetic (\ref{eq:magnetic}) fields, we get
+%
+\begin{align*}
+m \ddot r &= qE + q\dot r \times B \\
+0 &= - m \ddot r + q(- \nabla V) + q\dot r \times B_0 \hat{e}_z \\
+0 &= - m \ddot r + q \frac{V_0}{2d^2} \begin{pmatrix} -2x \\ -2y \\ 4z \end{pmatrix}
           + q \begin{pmatrix} \dot y B_0 \\ -\dot x B_0 \\ 0 \end{pmatrix} \\
-m \dot r &=
+0 &= \frac{1}{m}
     \begin{pmatrix} 
-        - q \frac{V_0}{d^2} x + q \dot y B_0 \\
-        - q \frac{V_0}{d^2} y - q \dot x B_0 \\
-        q \frac{V_0}{d^2} 2z \\
+        \ddot x - q \frac{V_0}{d^2} x - q \dot y B_0 \\
+        \ddot y - q \frac{V_0}{d^2} y + q \dot x B_0 \\
+        \ddot z + q \frac{V_0}{d^2} 2z \\
     \end{pmatrix}
-\end{align}
-
-\section*{Oppgave 2}
+\end{align*}
+%
+If we now introduce $\omega_0 = \frac{q B_0}{m}$ and $\omega_z^2 = \frac{2qV_0}{md^2}$, we can write the previous equation as
+%
+\begin{align*}
+0 &= \frac{1}{m}
+    \begin{pmatrix} 
+        \ddot x - \frac{1}{2} \omega_z^2 x - \omega_0 \dot y \\
+        \ddot y - \frac{1}{2} \omega_z^2 y + \omega_0 \dot x \\
+        \ddot z + \omega_z^2 z \\
+    \end{pmatrix}
+\end{align*}
+%
+This is a set of three ODEs, where the two first of them are coupled. To solve them more easily, we introduce the complex function $f(t) = x(t) + i y(t)$. Differentiating this twice with regards to time gives us two other equations that we can use to rewrite rewrite the first and second component of our vector equation into one complex equation.
+%
 \begin{align}
-f(t) &= x(t) + iy(t) \\
 \dot f(t) &= \dot x(t) + i \dot y(t) \\
-\ddot f(t) &= \ddot x(t) + i \ddot y(t)
+\ddot f(t) &= \ddot x(t) + i \ddot y(t),
 \end{align}
-
-\begin{align}
+%
+We begin with our first component, and insert expressions for $\ddot x$, $\dot y$ and $x$ derived from our expression for $f$.
+%
+\begin{align*}
 \ddot x - \omega_0 \dot y + \frac{1}{2} \omega_z^2 x &= 0 \\
 \left( \ddot f - i \ddot y \right) - \omega_0 \left( \frac{\dot f \dot x}{i} \right) + \frac{1}{2} \omega_z^2 \left( f - iy \right) &= 0 \\
+\end{align*}
+%
+We then insert an expression for $\ddot y$ derived from $f$, and get
+%
+\begin{align*}
 \ddot f - i \left( - \omega_0 \dot x + \frac{1}{2} \omega_z^2 y \right) + i \omega_0 \dot f \dot x + \frac{1}{2} \omega_z^2 \left( f - iy \right) &= 0 \\
 \ddot f + i \omega_0 \dot x - \omega_0 \dot x + \frac{1}{2} \omega_z^2 i y - \frac{1}{2} \omega_z^2 i y + i \omega_0 \dot f - \frac{1}{2} \omega_z^2 f &= 0 \\
 \ddot f + i \omega_0 \dot f - \frac{1}{2} \omega_z^2 f &= 0
-\end{align}
+\end{align*}
+%
+We now have two ODEs that together describe how particles behave in and around our trap. $\ddot f + i \omega_0 \dot f - 1/2 \omega_z^2 f = 0$ gives us information about the $x$-axis ($\Re(f)$) and $y$-axis ($\Im(f)$), and $\ddot z + \omega_z^2 z = 0$ describes the movement along the $z$-axis. 
+
+%%% ------------------------------------------------------------------------ %%%
+% Har ikke ført inn problem 3, men tror problem 1 og 2 er helt ok ført nå. Det er
+% litt mange ligninger og mye matte per forklaring, men det er mulig det er 
+% vanskelig å unngå. Kan hende vi kan slippe unna med mindre mellomregning da,
+% og kanskje å droppe de ligningene helt øverst.
+%%% ------------------------------------------------------------------------ %%%
 
 \section*{Oppgave 3}
 $\text{Re}(-i\omega_\pm) \leq 0$
