@@ -80,6 +80,8 @@ clean:
 	@rm -f latex/main.blg
 	@rm -f latex/mainNotes.bib
 	@rm -f latex/amsmath.aux
+	@rm -f latex/main.fdb_latexmk
+	@rm -f latex/main.fls
 
 ### Data ###
 data/some_data.csv: data main
