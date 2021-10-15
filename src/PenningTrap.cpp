@@ -14,7 +14,8 @@ void PenningTrap::add_particle(Particle p){
 }
 
 arma::vec PenningTrap::external_E_field(arma::vec r){
-    arma::vec E(3);
+    arma::vec E(3, arma::fill::zeros);
+    if (arma::norm(r) > d) return E; // return 0 if particle is outside PenningTrap
     E(0) = - 2.0 * r(0);
     E(1) = - 2.0 * r(1);
     E(2) = 4.0 * r(2);
@@ -23,6 +24,7 @@ arma::vec PenningTrap::external_E_field(arma::vec r){
 
 arma::vec PenningTrap::external_B_field(arma::vec r){
     arma::vec B(3, arma::fill::zeros);
+    if (arma::norm(r) > d) return B; // return 0 if particle is outside PenningTrap
     B(2) = B_0;
     return B;
 }
@@ -175,4 +177,21 @@ std::vector<arma::mat> PenningTrap::get_solution(){
 
 std::vector<double> PenningTrap::get_time(){
     return t_sol;
+}
+
+int PenningTrap::count_particles_in_region(){
+    int count = 0;
+    for (int i = 0; i < particles.size(); i++)
+        if (arma::norm(particles[i].r) < d) 
+            count++;
+    return count;
+}
+
+void PenningTrap::add_random_particles(int n){
+    for (int i = 0; i < n; i++){
+        arma::vec r = arma::vec(3).randn() * 0.1 * d;  // random initial position
+        arma::vec v = arma::vec(3).randn() * 0.1 * d;  // random initial velocity
+        Particle p(1., 2., r, v);
+        add_particle(p);
+    }
 }

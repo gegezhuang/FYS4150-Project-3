@@ -21,6 +21,7 @@ class PenningTrap {
         void solve_RK4(int N, double dt);
         std::vector<arma::mat> get_solution();
         std::vector<double> get_time();
+        void add_random_particles(int n);
     private:
         double B_0;
         double V_0;
@@ -34,4 +35,5 @@ class PenningTrap {
         //Calculate position of particles in t_(k+1) and add to solution
         void evolve_RK4(double dt);
         void evolve_forward_Euler(double dt);
+        int count_particles_in_region();
 };
