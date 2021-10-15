@@ -26,10 +26,10 @@ debug: $(HEADERS) $(SOURCES)
 	$(CXX) src/main.cpp $(SOURCES) $(INCLUDES) -o debug $(GENERAL_FLAGS) $(DEBUG_FLAGS)
 	gdb --args ./debug
 
-main: $(HEADERS) $(SOURCES)
-	$(CXX) $(SOURCES) $(INCLUDES) -o main $(GENERAL_FLAGS)
+main: src/main.cpp $(HEADERS) $(SOURCES)
+	$(CXX) src/main.cpp $(SOURCES) $(INCLUDES) -o main $(GENERAL_FLAGS)
 
-test: test.cpp $(HEADERS) $(SOURCES)
+test: src/main_test.cpp $(HEADERS) $(SOURCES)
 	$(CXX) src/main_test.cpp $(SOURCES) $(INCLUDES) -o test $(GENERAL_FLAGS)
 	./test
 
