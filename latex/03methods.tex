@@ -54,25 +54,22 @@ m \ddot r &= qE + q\dot r \times B \\
     \end{pmatrix}
 \end{align*}
 %
-If we now introduce $\omega_0 = \frac{q B_0}{m}$ and $\omega_z^2 = \frac{2qV_0}{md^2}$, we can write the previous equation as
+If we now introduce $\omega_0 = \frac{q B_0}{m}$ and $\omega_z^2 = \frac{2qV_0}{md^2}$, and split the vector equations into separate equations, we have that
 % Vi burde si noe om tolkningen til omega-variablene, men jeg vet ikke helt hva den er jeg
 %
-\begin{align*}
-0 &= \frac{1}{m}
-    \begin{pmatrix} 
-        \ddot x - \omega_z^2 x / 2 - \omega_0 \dot y \\
-        \ddot y - \omega_z^2 y / 2 + \omega_0 \dot x \\
-        \ddot z + \omega_z^2 z \\
-    \end{pmatrix}
-\end{align*}
+\begin{align}
+\label{eq:ode_x} \ddot x - \omega_z^2 x / 2 - \omega_0 \dot y & = 0 \\
+\label{eq:ode_y} \ddot y - \omega_z^2 y / 2 + \omega_0 \dot x &= 0 \\
+\label{eq:ode_z} \ddot z + \omega_z^2 z &= 0
+\end{align}
 %
-This is a set of three ODEs, where the two first of them are coupled. To solve them more easily, we introduce the complex function $f = x + i y$. Differentiating this twice with regards to time gives us two other equations that we can use to rewrite rewrite the first and second component of our vector equation into one complex equation.
+This is a set of three ODEs, where the two first of them are coupled. To solve them more easily, we introduce the complex function $f = x + i y$. Differentiating this twice with regards to time gives us two other equations that we can use to rewrite (\ref{eq:ode_x}) and (\ref{eq:ode_y}) into one complex equation.
 %
 \begin{equation*}
-\dot f = \dot x + i \dot y, \text{ and } \ddot f = \ddot x + i \ddot y,
+\dot f = \dot x + i \dot y, \text{ and } \ddot f = \ddot x + i \ddot y.
 \end{equation*}
 %
-We begin with our first component, and insert expressions for $\ddot x$, $\dot y$ and $x$ derived from our expression for $f$.
+We begin with (\ref{eq:ode_x}), and insert expressions for $\ddot x$, $\dot y$ and $x$ derived from our expression for $f$.
 %
 \begin{align*}
 \ddot x - \omega_0 \dot y + \frac{1}{2} \omega_z^2 x &= 0 \\
@@ -91,9 +88,10 @@ We now have two ODEs that together describe how particles behave in and around o
 
 Let us now analyse how our model predicts the particles will behave in the $xy$-plane. The analytical solution of our complex ODE is 
 %
-\begin{equation*}
+\begin{equation}
 f(t) = A_+e^{-\omega_+ t} + A_-e^{-\omega_- t},
-\end{equation*}
+\label{eq:analytical_solution_xy}
+\end{equation}
 %
 where
 \begin{equation*}
