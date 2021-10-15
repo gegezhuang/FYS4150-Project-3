@@ -22,9 +22,6 @@ DEBUG_FLAGS = -Wall -Wextra -g
 INCLUDES = -I include
 
 ### Compiling C++ files ###
-print:
-	@echo $(SOURCES)
-
 debug: $(HEADERS) $(SOURCES)
 	$(CXX) src/main.cpp $(SOURCES) $(INCLUDES) -o debug $(GENERAL_FLAGS) $(DEBUG_FLAGS)
 	gdb --args ./debug
