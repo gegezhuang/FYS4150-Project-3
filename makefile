@@ -8,8 +8,8 @@
 ALL_TARGET_FILES = plots/some_plot.pdf
 
 ### Files used for compiling C++ or latex ###
-HEADERS := $(wildcard include/*.hpp)
-SOURCES := $(wildcard src/*.cpp)
+HEADERS := $(wildcard include/*.hpp) 
+SOURCES := $(filter-out src/main%,$(wildcard src/*.cpp))
 TEX_FILES = $(wildcard latex/*.tex)
 
 ### C++ compiler and python runner ###
@@ -22,15 +22,18 @@ DEBUG_FLAGS = -Wall -Wextra -g
 INCLUDES = -I include
 
 ### Compiling C++ files ###
+print:
+	@echo $(SOURCES)
+
 debug: $(HEADERS) $(SOURCES)
-	$(CXX) $(SOURCES) $(INCLUDES) -o debug $(GENERAL_FLAGS) $(DEBUG_FLAGS)
+	$(CXX) src/main.cpp $(SOURCES) $(INCLUDES) -o debug $(GENERAL_FLAGS) $(DEBUG_FLAGS)
 	gdb --args ./debug
 
 main: $(HEADERS) $(SOURCES)
 	$(CXX) $(SOURCES) $(INCLUDES) -o main $(GENERAL_FLAGS)
 
 test: test.cpp $(HEADERS) $(SOURCES)
-	$(CXX) test.cpp $(SOURCES) $(INCLUDES) -o test $(GENERAL_FLAGS)
+	$(CXX) src/main_test.cpp $(SOURCES) $(INCLUDES) -o test $(GENERAL_FLAGS)
 	./test
 
 ### Creating folders ###
