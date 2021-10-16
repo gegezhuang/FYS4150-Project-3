@@ -1,9 +1,10 @@
-#include "project3/Particle.hpp"
-#include "project3/PenningTrap.hpp"
+#include "Particle.hpp"
+#include "PenningTrap.hpp"
 
 int main() {
     //example code with arbitrarily chosen values for
     //position and velocity
+    
     double charge, mass; charge = 1.0; mass = 2.0;
     arma::vec pos = { 3.0, 0.0, 0.0 };
     arma::vec vel = { 0.0, 1.0, 1.0 };

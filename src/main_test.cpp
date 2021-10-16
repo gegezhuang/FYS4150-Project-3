@@ -1,8 +1,8 @@
 #include <assert.h>
 
-#include "project3/Particle.hpp"
-#include "project3/PenningTrap.hpp"
-#include "project3/analytical.hpp"
+#include "Particle.hpp"
+#include "PenningTrap.hpp"
+#include "analytical.hpp"
 
 int main() {
     double q = 1, m = 1;
@@ -30,8 +30,8 @@ int main() {
         // TODO: Add z_err when that is computed analytically
 
         // Asserts that the relative error stays below 10^-3
-        assert(x_err < 1e-3);
-        assert(y_err < 1e-3);
+        assert (x_err < 1e-3);
+        assert (y_err < 1e-3);
     }
     return 0;
 }
