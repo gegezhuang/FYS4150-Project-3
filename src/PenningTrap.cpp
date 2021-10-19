@@ -1,7 +1,7 @@
 #include <iostream>
 #include <armadillo>
-#include "Particle.hpp"
-#include "PenningTrap.hpp"
+#include "project3/Particle.hpp"
+#include "project3/PenningTrap.hpp"
 
 
 /**

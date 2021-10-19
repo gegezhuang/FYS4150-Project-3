@@ -1,8 +1,8 @@
 #include <assert.h>
 
-#include "Particle.hpp"
-#include "PenningTrap.hpp"
-#include "analytical.hpp"
+#include "project3/Particle.hpp"
+#include "project3/PenningTrap.hpp"
+#include "project3/analytical.hpp"
 
 int main() {
     double q = 1, m = 1;

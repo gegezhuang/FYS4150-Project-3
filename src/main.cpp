@@ -1,7 +1,9 @@
-#include "Particle.hpp"
-#include "PenningTrap.hpp"
+#include <armadillo>
+#include "project3/Particle.hpp"
+#include "project3/PenningTrap.hpp"
 
 int main() {
+    arma::arma_rng::set_seed(42);
     //example code with arbitrarily chosen values for
     //position and velocity
     
