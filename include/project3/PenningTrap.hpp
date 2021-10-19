@@ -2,14 +2,15 @@
 
 #include <armadillo>
 #include <vector>
-#include "project3/Particle.hpp"
 
 class PenningTrap {
     public:
         PenningTrap(double magnetic_field_strength, double applied_potential,
         double characteristic_dimension);
+        PenningTrap(double magnetic_field_strength, double applied_potential,
+        double characteristic_dimension, double amplitude, double angular_frequency);
         void add_particle(Particle p);
-        arma::vec external_E_field(arma::vec r);
+        arma::vec external_E_field(arma::vec r, double t);
         arma::vec external_B_field(arma::vec r);
         arma::vec force_particle(int i, int j);
         arma::vec total_force_external(int i);
@@ -27,6 +28,8 @@ class PenningTrap {
         double V_0;
         double d;
         double t;
+        double f;
+        double omega_V;
         std::vector<Particle> particles;
         //solution[k] contains matrix with the solution in t_k.
         //Column i in the matrix is the position of particle i in t_k.

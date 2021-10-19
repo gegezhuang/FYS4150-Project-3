@@ -10,12 +10,28 @@
  * @param magnetic_field_strength Magnetic field strength (B_0) [unit: u / (&micro;s * e)]
  * @param applied_potential The applied potential to the elocrodes (V_0) [unit: u * &micro;m^2 / (&micro;s^2 * e) ]
  * @param characteristic_dimension The length scale for the region between the electrodes (d) [unit: micrometer - &micro;m ]
+ * @todo add the rest
  */
-PenningTrap::PenningTrap(double magnetic_field_strength, double applied_potential, double characteristic_dimension) {
+PenningTrap::PenningTrap(double magnetic_field_strength, double applied_potential,
+ double characteristic_dimension, double amplitude, double angular_frequency) {
     B_0 = magnetic_field_strength;
     V_0 = applied_potential;
     d = characteristic_dimension;
+    f = amplitude;
+    omega_V = angular_frequency;
 }
+
+/**
+ * Class holding the state of the PenningTrap and methods for simulating the system
+ * 
+ * @param magnetic_field_strength Magnetic field strength (B_0) [unit: u / (&micro;s * e)]
+ * @param applied_potential The applied potential to the elocrodes (V_0) [unit: u * &micro;m^2 / (&micro;s^2 * e) ]
+ * @param characteristic_dimension The length scale for the region between the electrodes (d) [unit: micrometer - &micro;m ]
+ */
+PenningTrap::PenningTrap(double magnetic_field_strength, double applied_potential,
+ double characteristic_dimension){
+     PenningTrap(magnetic_field_strength, applied_potential, characteristic_dimension, 0, 0); // TODO: initialize f and omega_V in hpp?
+ }
 
 /**
  * Adds particle PenningTrap
@@ -37,6 +53,7 @@ arma::vec PenningTrap::external_E_field(arma::vec r){
     E(0) = - 2.0 * r(0);
     E(1) = - 2.0 * r(1);
     E(2) = 4.0 * r(2);
+    E *= (V_0 * (1 + f * cos(omega_V * t))) / (d * d);
     return E;
 }
 
@@ -124,7 +141,7 @@ void PenningTrap::evolve_forward_Euler(double dt){
         positions.col(i) = particles[i].r + dt*particles[i].v;
     }
     //add to solution
-    t = t + dt;
+    t += dt;
     t_sol.push_back(t);
     solution.push_back(positions);
     //update position in Particle objects 
@@ -170,6 +187,7 @@ void PenningTrap::evolve_RK4(double dt){
         k1_v.col(i) = total_force(i)/particles[i].m;
     }
     k1_r = original_velocities;
+    t += dt / 2;
     //Set new values for v, r to calculate k2
     for (int i=0; i<n; i++){
         particles[i].v = original_velocities.col(i) + dt*k1_v.col(i)/2;
@@ -193,6 +211,7 @@ void PenningTrap::evolve_RK4(double dt){
         particles[i].v = original_velocities.col(i) + dt*k3_v.col(i);
         particles[i].r = original_positions.col(i) + dt*k3_r.col(i);
     }
+    t += dt / 2;
     for (int i=0; i<n; i++){
         k4_v.col(i) = total_force(i)/particles[i].m;
         k4_r.col(i) = particles[i].v;
@@ -200,7 +219,6 @@ void PenningTrap::evolve_RK4(double dt){
     //Compute v_(i+1) and r_(i+1) and add to solution-vector
     velocities = original_velocities + dt*(k1_v + 2*k2_v + 2*k3_v + k4_v)/6;
     positions = original_positions + dt*(k1_r + 2*k2_r + 2*k3_r + k4_r)/6;
-    t = t + dt;
     t_sol.push_back(t);
     solution.push_back(positions);
     //update positions + velocities in Particle objects
