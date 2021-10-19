@@ -5,8 +5,6 @@
 using namespace std;
 
 int main() {
-    int outside = check_random_particles_outside_trap(1000000, 1);
-    cout << outside << endl;
     arma::arma_rng::set_seed(42);
     //example code with arbitrarily chosen values for
     //position and velocity

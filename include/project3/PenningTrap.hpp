@@ -10,8 +10,8 @@ class PenningTrap {
         PenningTrap(double magnetic_field_strength, double applied_potential,
         double characteristic_dimension, double amplitude, double angular_frequency);
         void add_particle(Particle p);
-        arma::vec external_E_field(arma::vec r, double t);
-        arma::vec external_B_field(arma::vec r);
+        arma::vec external_E_field(arma::vec& r);
+        arma::vec external_B_field(arma::vec& r);
         arma::vec force_particle(int i, int j);
         arma::vec total_force_external(int i);
         arma::vec total_force_particles(int i);
@@ -40,5 +40,3 @@ class PenningTrap {
         void evolve_forward_Euler(double dt);
         int count_particles_in_region();
 };
-
-int check_random_particles_outside_trap(int n, double d);

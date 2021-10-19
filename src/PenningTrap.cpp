@@ -47,13 +47,15 @@ void PenningTrap::add_particle(Particle p){
  * @return (-2x, -2y, 4z). 
  * Or zero vecotor if position is outside PenningTrap (i.e if |r| > d) [unit: TODO: what's the unit?]
  */
-arma::vec PenningTrap::external_E_field(arma::vec r){
+arma::vec PenningTrap::external_E_field(arma::vec& r){
     arma::vec E(3, arma::fill::zeros);
     if (arma::norm(r) > d) return E; // return 0 if particle is outside PenningTrap
     E(0) = - 2.0 * r(0);
     E(1) = - 2.0 * r(1);
     E(2) = 4.0 * r(2);
     E *= (V_0 * (1 + f * cos(omega_V * t))) / (d * d);
+    std::cout << "E + 9: ";
+    E.print();
     return E;
 }
 
@@ -65,7 +67,7 @@ arma::vec PenningTrap::external_E_field(arma::vec r){
  * @return Calculated strength of the magneticfield field at positon (0, 0, B_0). 
  * Or zero vecotor if position is outside PenningTrap (i.e if |r| > d) [unit: u / (&micro;s * e)]
  */
-arma::vec PenningTrap::external_B_field(arma::vec r){
+arma::vec PenningTrap::external_B_field(arma::vec& r){
     arma::vec B(3, arma::fill::zeros);
     if (arma::norm(r) > d) return B; // return 0 if particle is outside PenningTrap
     B(2) = B_0;
