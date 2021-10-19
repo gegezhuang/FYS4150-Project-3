@@ -166,11 +166,10 @@ void PenningTrap::evolve_RK4(double dt){
     arma::mat velocities(3, n);
     arma::mat original_positions(3, n);
     arma::mat original_velocities(3, n);
-    arma::mat k1_v(3, n); arma::mat k2_v(3, n); 
-    arma::mat k3_v(3, n); arma::mat k4_v(3, n);
-    arma::mat k1_r(3, n); arma::mat k2_r(3, n); 
-    arma::mat k3_r(3, n); arma::mat k4_r(3, n);
-    //read positions/velocities of particles at start of timestep
+    arma::mat k1_r(3, n); arma::mat k1_v(3, n); 
+    arma::mat k2_r(3, n); arma::mat k2_v(3, n); 
+    arma::mat k3_r(3, n); arma::mat k3_v(3, n); 
+    arma::mat k4_r(3, n); arma::mat k4_v(3, n); 
     for (int i=0; i<n; i++){
         original_positions.col(i) = particles[i].r;
         original_velocities.col(i) = particles[i].v;
