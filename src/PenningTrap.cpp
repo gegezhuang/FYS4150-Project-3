@@ -1,7 +1,7 @@
 #include <iostream>
 #include <armadillo>
-#include "Particle.hpp"
-#include "PenningTrap.hpp"
+#include "project3/Particle.hpp"
+#include "project3/PenningTrap.hpp"
 
 
 /**
@@ -127,8 +127,11 @@ arma::vec PenningTrap::total_force(int i){
     return total_force_particles(i) + total_force_external(i);
 }
 
-//TODO: docstrings for ODE solvers 
-
+/**
+  * Calculates the system one time step forward in time using Forward Euler
+  *
+  * @param dt The length for the time step
+  */
 void PenningTrap::evolve_forward_Euler(double dt){
     int n = particles.size();
     arma::vec a_i;
@@ -151,6 +154,13 @@ void PenningTrap::evolve_forward_Euler(double dt){
     }
 }
 
+/**
+  * Clears previous solutions, reserves memory and calculates the solution for 
+  * a system by evolving using forward euler repeatedly
+  *
+  * @param N The number of iterations to evolve the system
+  * @param dt The length for each time step
+  */
 void PenningTrap::solve_forward_Euler(int N, double dt){
     //remove previous solution and reserve memory
     solution.clear();
@@ -173,11 +183,10 @@ void PenningTrap::evolve_RK4(double dt){
     arma::mat velocities(3, n);
     arma::mat original_positions(3, n);
     arma::mat original_velocities(3, n);
-    arma::mat k1_v(3, n); arma::mat k2_v(3, n); 
-    arma::mat k3_v(3, n); arma::mat k4_v(3, n);
-    arma::mat k1_r(3, n); arma::mat k2_r(3, n); 
-    arma::mat k3_r(3, n); arma::mat k4_r(3, n);
-    //read positions/velocities of particles at start of timestep
+    arma::mat k1_r(3, n); arma::mat k1_v(3, n); 
+    arma::mat k2_r(3, n); arma::mat k2_v(3, n); 
+    arma::mat k3_r(3, n); arma::mat k3_v(3, n); 
+    arma::mat k4_r(3, n); arma::mat k4_v(3, n); 
     for (int i=0; i<n; i++){
         original_positions.col(i) = particles[i].r;
         original_velocities.col(i) = particles[i].v;
@@ -276,4 +285,15 @@ void PenningTrap::add_random_particles(int n){
         Particle p(1., 2., r, v); // TODO: change mass and charge
         add_particle(p);
     }
+}
+// TODO: Do we want this?
+int check_random_particles_outside_trap(int n, double d){
+    int outside = 0;
+    for (int i = 0; i < n; i++){
+        arma::vec r = arma::vec(3).randn() * 0.1 * d;
+        double dist = sqrt(pow(r(0), 2.0) + pow(r(1), 2.0) +  pow(r(2), 2.0));
+        if (dist > d)
+            outside++;
+    }
+    return outside;
 }

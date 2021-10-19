@@ -40,3 +40,5 @@ class PenningTrap {
         void evolve_forward_Euler(double dt);
         int count_particles_in_region();
 };
+
+int check_random_particles_outside_trap(int n, double d);

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <armadillo>
-#include "Particle.hpp"
+#include "project3/Particle.hpp"
 
 /**
  * Particle class keeping state of particle
