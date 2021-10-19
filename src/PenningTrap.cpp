@@ -110,8 +110,11 @@ arma::vec PenningTrap::total_force(int i){
     return total_force_particles(i) + total_force_external(i);
 }
 
-//TODO: docstrings for ODE solvers 
-
+/**
+  * Calculates the system one time step forward in time using Forward Euler
+  *
+  * @param dt The length for the time step
+  */
 void PenningTrap::evolve_forward_Euler(double dt){
     int n = particles.size();
     arma::vec a_i;
@@ -134,6 +137,13 @@ void PenningTrap::evolve_forward_Euler(double dt){
     }
 }
 
+/**
+  * Clears previous solutions, reserves memory and calculates the solution for 
+  * a system by evolving using forward euler repeatedly
+  *
+  * @param N The number of iterations to evolve the system
+  * @param dt The length for each time step
+  */
 void PenningTrap::solve_forward_Euler(int N, double dt){
     //remove previous solution and reserve memory
     solution.clear();
@@ -258,4 +268,15 @@ void PenningTrap::add_random_particles(int n){
         Particle p(1., 2., r, v); // TODO: change mass and charge
         add_particle(p);
     }
+}
+// TODO: Do we want this?
+int check_random_particles_outside_trap(int n, double d){
+    int outside = 0;
+    for (int i = 0; i < n; i++){
+        arma::vec r = arma::vec(3).randn() * 0.1 * d;
+        double dist = sqrt(pow(r(0), 2.0) + pow(r(1), 2.0) +  pow(r(2), 2.0));
+        if (dist > d)
+            outside++;
+    }
+    return outside;
 }
