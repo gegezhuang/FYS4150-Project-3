@@ -1,10 +1,13 @@
 #include <armadillo>
 #include "project3/Particle.hpp"
 #include "project3/PenningTrap.hpp"
+#include "tests/testing.hpp"
 
 using namespace std;
 // TODO: V_0 and d only appears as V_0 / (d*d)
 int main() {
+    run_testing();
+    return 0;
     arma::arma_rng::set_seed(42);
     //example code with arbitrarily chosen values for
     //position and velocity
