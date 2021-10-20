@@ -29,8 +29,8 @@ PenningTrap::PenningTrap(double magnetic_field_strength, double applied_potentia
  * @param characteristic_dimension The length scale for the region between the electrodes (d) [unit: micrometer - &micro;m ]
  */
 PenningTrap::PenningTrap(double magnetic_field_strength, double applied_potential,
- double characteristic_dimension){
-     PenningTrap(magnetic_field_strength, applied_potential, characteristic_dimension, 0, 0); // TODO: initialize f and omega_V in hpp?
+ double characteristic_dimension) : PenningTrap(magnetic_field_strength, applied_potential, characteristic_dimension, 0, 0){
+     // TODO: initialize f and omega_V in hpp?
  }
 
 /**
@@ -49,6 +49,8 @@ void PenningTrap::add_particle(Particle p){
  */
 arma::vec PenningTrap::external_E_field(arma::vec& r){
     arma::vec E(3, arma::fill::zeros);
+    r.print();
+    std::cout << d << std::endl;
     if (arma::norm(r) > d) return E; // return 0 if particle is outside PenningTrap
     E(0) = - 2.0 * r(0);
     E(1) = - 2.0 * r(1);
@@ -97,6 +99,7 @@ arma::vec PenningTrap::force_particle(int i, int j){
  * @return q_i * external_E_field(r_i) + v_i x external_B_field(r_i)
  */
 arma::vec PenningTrap::total_force_external(int i){
+    std::cout << i << std::endl;
     return particles[i].q * (external_E_field(particles[i].r) 
                         + arma::cross(particles[i].v, external_B_field(particles[i].r)));
 }
@@ -241,6 +244,7 @@ void PenningTrap::evolve_RK4(double dt){
 
 void PenningTrap::solve_RK4(int N, double dt){
     //remove previous solution and reserve memory
+    std::cout << "Her er jeg" << std::endl;
     solution.clear();
     t_sol.clear();
     solution.reserve(N);
