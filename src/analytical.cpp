@@ -12,6 +12,7 @@ std::vector<arma::vec> solve_analytically(arma::vec t, double q, double m,
 
     double omega0 = q * B0 / m;
     double omegaz2 = 2 * q * V0 / (m * pow(d, 2));
+    double omegaz = sqrt(omegaz2);
 
     double omegap = (omega0 + sqrt(pow(omega0, 2) - 2*omegaz2))/2;
     double omegam = (omega0 - sqrt(pow(omega0, 2) - 2*omegaz2))/2;
@@ -25,7 +26,7 @@ std::vector<arma::vec> solve_analytically(arma::vec t, double q, double m,
     for (int i = 0; i < t.size(); i++) {
         x[i] = Ap * cos(- omegap * t[i]) + Am * cos(- omegam * t[i]);
         y[i] = Ap * sin(- omegap * t[i]) + Am * sin(- omegam * t[i]);
-        z[i] = 0; // TODO: Add solution in z-direction too
+        z[i] = z0 * cos(omegaz * t[i]);
     }
 
     std::vector<arma::vec> solution = {x, y, z};
