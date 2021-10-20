@@ -49,15 +49,13 @@ void PenningTrap::add_particle(Particle p){
  */
 arma::vec PenningTrap::external_E_field(arma::vec& r){
     arma::vec E(3, arma::fill::zeros);
-    r.print();
-    std::cout << d << std::endl;
+    // r.print();
     if (arma::norm(r) > d) return E; // return 0 if particle is outside PenningTrap
     E(0) = - 2.0 * r(0);
     E(1) = - 2.0 * r(1);
     E(2) = 4.0 * r(2);
     E *= (V_0 * (1 + f * cos(omega_V * t))) / (d * d);
-    std::cout << "E + 9: ";
-    E.print();
+    // E.print();
     return E;
 }
 
@@ -99,7 +97,6 @@ arma::vec PenningTrap::force_particle(int i, int j){
  * @return q_i * external_E_field(r_i) + v_i x external_B_field(r_i)
  */
 arma::vec PenningTrap::total_force_external(int i){
-    std::cout << i << std::endl;
     return particles[i].q * (external_E_field(particles[i].r) 
                         + arma::cross(particles[i].v, external_B_field(particles[i].r)));
 }
@@ -244,7 +241,6 @@ void PenningTrap::evolve_RK4(double dt){
 
 void PenningTrap::solve_RK4(int N, double dt){
     //remove previous solution and reserve memory
-    std::cout << "Her er jeg" << std::endl;
     solution.clear();
     t_sol.clear();
     solution.reserve(N);
@@ -267,6 +263,7 @@ std::vector<double> PenningTrap::get_time(){
 }
 
 /**
+ * TODO: This is not used anywhere?
  * @return The number of particles inside the PenningTrap (i.e particles with |r| < d)
  */
 int PenningTrap::count_particles_in_region(){
@@ -291,15 +288,4 @@ void PenningTrap::add_random_particles(int n){
         Particle p(1., 2., r, v); // TODO: change mass and charge
         add_particle(p);
     }
-}
-// TODO: Do we want this?
-int check_random_particles_outside_trap(int n, double d){
-    int outside = 0;
-    for (int i = 0; i < n; i++){
-        arma::vec r = arma::vec(3).randn() * 0.1 * d;
-        double dist = sqrt(pow(r(0), 2.0) + pow(r(1), 2.0) +  pow(r(2), 2.0));
-        if (dist > d)
-            outside++;
-    }
-    return outside;
 }
