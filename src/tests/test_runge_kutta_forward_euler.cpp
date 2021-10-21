@@ -1,3 +1,6 @@
+#include <string>
+#include <fstream>
+
 #include <iostream>
 using namespace std; // TODO: Remove
 
@@ -6,8 +9,8 @@ using namespace std; // TODO: Remove
 #include "project3/analytical.hpp"
 #include "project3/Particle.hpp"
 #include "project3/PenningTrap.hpp"
+#include "project3/config.hpp"
 #include "tests/test_runge_kutta_forward_euler.hpp"
-#include "tests/config.hpp"
 
 PenningTrap initialize_penning_trap() {
     Particle a(charge, mass, pos, vel);
@@ -36,7 +39,6 @@ void test_runge_kutta() {
         assert (1e-10 > abs(t - t_i));
     }
 
-
     std::vector<arma::mat> sol = pt.get_solution();
 
     for (int i = 0; i < 3; i++){
@@ -49,6 +51,14 @@ void test_runge_kutta() {
         std::cout << std::endl;
     }
 }
+
+/*
+ofstream get_file(string name) {
+
+    return ofile;
+};
+
+*/
 
 void test_forward_euler() {
     PenningTrap pt = initialize_penning_trap();
@@ -63,12 +73,26 @@ void test_analytical() {
     arma::vec pos = { 1.0, 0.0, 0.0 };
     arma::vec vel = { 0.0, 1.0, 0.0 };
 
-    arma::vec t = { 0.0, 0.3,  0.6, 1.0 };
+    // arma::vec t = { 0.0, 0.3,  0.6, 1.0 };
+    arma::vec t(N);
+    for (auto i = 0; i < N; i++) {
+        t(i) = ((double) i) * step_size;
+    }
 
     std::vector<arma::vec> sol = solve_analytically(t, charge, mass, pos(0), pos(2), vel(1), B_0, V_0, d);
-    arma::mat solution_matrix  = std::move(arma::join_rows( sol[0], sol[1], sol[2] ));
-    cout << "        x        y        z" << endl;
-    solution_matrix.print();
+
+    ofstream ofile;
+    ofile.open("data/analytical_positons.csv");
+    ofile << scientific;
+    ofile << "x,y,z" << endl;
+    for (int i = 0; i < N; i++) {
+        ofile << sol[0][i] << "," << sol[1][i] << "," << sol[2][i] << endl;
+    }
+    ofile.close();
+
+    // arma::mat solution_matrix  = std::move(arma::join_rows( sol[0], sol[1], sol[2] ));
+    // cout << "        x        y        z" << endl;
+    // solution_matrix.print();
 }
 
 void test_runge_kutta_forward_euler() {

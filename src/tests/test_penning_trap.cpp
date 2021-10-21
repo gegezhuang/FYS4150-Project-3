@@ -3,8 +3,8 @@
 #include "project3/Particle.hpp"
 #include "project3/PenningTrap.hpp"
 #include "project3/analytical.hpp"
+#include "project3/config.hpp"
 #include "tests/test_penning_trap.hpp"
-#include "tests/config.hpp"
 
 PenningTrap test_penning_trap_creation() {
     PenningTrap pt(B_0, V_0, d);
