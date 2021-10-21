@@ -51,9 +51,9 @@ arma::vec PenningTrap::external_E_field(arma::vec& r){
     arma::vec E(3, arma::fill::zeros);
     // r.print();
     if (arma::norm(r) > d) return E; // return 0 if particle is outside PenningTrap
-    E(0) = - 2.0 * r(0);
-    E(1) = - 2.0 * r(1);
-    E(2) = 4.0 * r(2);
+    E(0) = + r(0);
+    E(1) = + r(1);
+    E(2) = - 2.0 * r(2);
     E *= (V_0 * (1 + f * cos(omega_V * t))) / (d * d);
     // E.print();
     return E;
