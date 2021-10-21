@@ -9,6 +9,27 @@ from mpl_toolkits.mplot3d import Axes3D
 
 sns.set()
 
+def side_by_side_plot(infile_1, infile_2, outfile):
+    fig, ax = plt.subplots(1, 2)
+    #  fig.suptitle(title)
+    df1 = pd.read_csv(f"data/{infile_1}.csv")
+    df2 = pd.read_csv(f"data/{infile_2}.csv")
+
+    sns.
+    #  ax[0].set_title(plot_one_title)
+    #  for x_data, y_data, label in zip(plot_one_x_data, plot_one_y_data, plot_one_labels):
+        #  sns.lineplot(x=x_data, y=y_data, label=label, ax=ax[0])
+    #  ax[0].set(xlabel=plot_one_x_label, ylabel=plot_one_y_label)
+
+    #  ax[1].set_title(plot_two_title)
+    #  for x_data, y_data, label in zip(plot_two_x_data, plot_two_y_data, plot_two_labels):
+        #  sns.lineplot(x=x_data, y=y_data, label=label, ax=ax[1])
+    #  ax[1].set(xlabel=plot_two_x_label, ylabel=plot_two_y_label)
+
+    plt.legend()
+    if filename:
+        plt.savefig(f"output/{filename.replace(' ', '_')}")
+    plt.show()
 
 # TODO: Axis names
 def plot_3d_solution(ax: matplotlib.axes, filename: str, label: str):
