@@ -35,9 +35,9 @@ void test_add_particles(PenningTrap pt) {
 
 void test_add_random_particles(PenningTrap pt) {
     assert (pt.count_particles_in_region() == 0);
-    pt.add_random_particles(5);
+    pt.add_random_particles(2., 1., 5);
     assert (pt.count_particles_in_region() == 5);
-    pt.add_random_particles(3);
+    pt.add_random_particles(2., 1., 3);
     assert (pt.count_particles_in_region() == 8);
 }
 

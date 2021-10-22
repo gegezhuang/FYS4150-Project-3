@@ -62,7 +62,6 @@ arma::vec PenningTrap::external_E_field(arma::vec& r){
 /**
  * Calculates strength of magnetic field at specified postion in 3d space. B(r)
  * 
- * 
  * @param r Positon in 3d space (x, y, z) [unit: micrometer - &micro;m]
  * @return Calculated strength of the magneticfield field at positon (0, 0, B_0). 
  * Or zero vecotor if position is outside PenningTrap (i.e if |r| > d) [unit: u / (&micro;s * e)]
@@ -279,13 +278,14 @@ int PenningTrap::count_particles_in_region(){
  * 
  * Random values are sampled using Gaussian distribution, and scaled with d.
  * 
- * TODO: What's the chance of a particle starting outside the PenningTrap?
+ * @param charge the charge of the particles [unit: u]
+ * @param mass the mass of the particle [unit: e]
  */
-void PenningTrap::add_random_particles(int n){
+void PenningTrap::add_random_particles(float charge, float mass, int n){
     for (int i = 0; i < n; i++){
         arma::vec r = arma::vec(3).randn() * 0.1 * d;  // random initial position
         arma::vec v = arma::vec(3).randn() * 0.1 * d;  // random initial velocity
-        Particle p(1., 2., r, v); // TODO: change mass and charge
+        Particle p(charge, mass, r, v);
         add_particle(p);
     }
 }
