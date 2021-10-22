@@ -5,16 +5,18 @@
 
 
 PenningTrap::PenningTrap(double magnetic_field_strength, double applied_potential,
- double characteristic_dimension, double amplitude, double angular_frequency) {
+ double characteristic_dimension, double amplitude, double angular_frequency, bool coloumb_interactions) {
     B_0 = magnetic_field_strength;
-    V_0 = applied_potential;
+    V_0_by_d_squared = applied_potential / (characteristic_dimension*characteristic_dimension);
     d = characteristic_dimension;
     f = amplitude;
     omega_V = angular_frequency;
+    ci = coloumb_interactions;
 }
 
 PenningTrap::PenningTrap(double magnetic_field_strength, double applied_potential,
- double characteristic_dimension) : PenningTrap(magnetic_field_strength, applied_potential, characteristic_dimension, 0, 0){
+ double characteristic_dimension, bool coloumb_interactions) : 
+ PenningTrap(magnetic_field_strength, applied_potential, characteristic_dimension, 0, 0, coloumb_interactions){
      // TODO: initialize f and omega_V in hpp?
  }
 
@@ -25,13 +27,11 @@ void PenningTrap::add_particle(Particle p){
 
 arma::vec PenningTrap::external_E_field(arma::vec& r){
     arma::vec E(3, arma::fill::zeros);
-    // r.print();
     if (arma::norm(r) > d) return E; // return 0 if particle is outside PenningTrap
     E(0) = + r(0);
     E(1) = + r(1);
     E(2) = - 2.0 * r(2);
-    E *= (V_0 * (1 + f * cos(omega_V * t))) / (d * d);
-    // E.print();
+    E *=  (1 + f * cos(omega_V * t)) * V_0_by_d_squared;
     return E;
 }
 
@@ -63,6 +63,7 @@ arma::vec PenningTrap::total_force_external(int i){
 
 arma::vec PenningTrap::total_force_particles(int i){
     arma::vec force_particles(3, arma::fill::zeros);
+    if (!ci) return force_particles;
     int n = particles.size();
     for (int j = 0; j < n; j++){
         if (i != j){
@@ -186,10 +187,12 @@ void PenningTrap::solve_RK4(int N, double dt){
     //add initial condition to solution
     t = 0;
     evolve_RK4(0.0);
+
     //solve ODE
-    for (int i=0; i<N-1; i++){
+    for (int i=0; i < N-1; i++){
         evolve_RK4(dt);
     }
+
 }
 
 std::vector<arma::mat> PenningTrap::get_solution(){
@@ -201,7 +204,6 @@ std::vector<double> PenningTrap::get_time(){
 }
 
 /**
- * TODO: This is not used anywhere?
  * @return The number of particles inside the PenningTrap (i.e particles with |r| < d)
  */
 int PenningTrap::count_particles_in_region(){
@@ -213,7 +215,7 @@ int PenningTrap::count_particles_in_region(){
 }
 
 
-void PenningTrap::add_random_particles(float charge, float mass, int n){
+void PenningTrap::add_random_particles(double charge, double mass, int n){
     for (int i = 0; i < n; i++){
         arma::vec r = arma::vec(3).randn() * 0.1 * d;  // random initial position
         arma::vec v = arma::vec(3).randn() * 0.1 * d;  // random initial velocity

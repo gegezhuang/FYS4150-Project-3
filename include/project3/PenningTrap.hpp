@@ -12,19 +12,22 @@ class PenningTrap {
          * @param magnetic_field_strength Magnetic field strength (B_0) [unit: u / (&micro;s * e)]
          * @param applied_potential The applied potential to the elocrodes (V_0) [unit: u * &micro;m^2 / (&micro;s^2 * e) ]
          * @param characteristic_dimension The length scale for the region between the electrodes (d) [unit: micrometer - &micro;m ]
+         * @param coloumb_interactions If false, the force due to coloumb interaction between particle is ignored. Default value is true
          */
         PenningTrap(double magnetic_field_strength, double applied_potential,
-        double characteristic_dimension);
+        double characteristic_dimension, bool coloumb_interactions = true);
         /**
         * Class holding the state of the PenningTrap and methods for simulating the system
         * 
         * @param magnetic_field_strength Magnetic field strength (B_0) [unit: u / (&micro;s * e)]
         * @param applied_potential The applied potential to the elocrodes (V_0) [unit: u * &micro;m^2 / (&micro;s^2 * e) ]
         * @param characteristic_dimension The length scale for the region between the electrodes (d) [unit: micrometer - &micro;m ]
-        * @todo add the rest
+        * @param amplitude @todo
+        * @param angular_frequency @todo
+        * @param coloumb_interactions If False, the force due to coloumb interaction between particle is ignored. Default value is true
         */
         PenningTrap(double magnetic_field_strength, double applied_potential,
-        double characteristic_dimension, double amplitude, double angular_frequency);
+        double characteristic_dimension, double amplitude, double angular_frequency, bool coloumb_interactions = true);
         /**
         * Adds particle PenningTrap
         */
@@ -101,15 +104,16 @@ class PenningTrap {
         * @param charge the charge of the particles [unit: u]
         * @param mass the mass of the particle [unit: e]
         */
-        void add_random_particles(float charge, float mass, int n);
+        void add_random_particles(double charge, double mass, int n);
         int count_particles_in_region();
     private:
         double B_0;
-        double V_0;
         double d;
+        double V_0_by_d_squared;
         double t;
         double f;
         double omega_V;
+        bool ci;
         std::vector<Particle> particles;
         //solution[k] contains matrix with the solution in t_k.
         //Column i in the matrix is the position of particle i in t_k.
