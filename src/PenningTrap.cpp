@@ -4,14 +4,6 @@
 #include "project3/PenningTrap.hpp"
 
 
-/**
- * Class holding the state of the PenningTrap and methods for simulating the system
- * 
- * @param magnetic_field_strength Magnetic field strength (B_0) [unit: u / (&micro;s * e)]
- * @param applied_potential The applied potential to the elocrodes (V_0) [unit: u * &micro;m^2 / (&micro;s^2 * e) ]
- * @param characteristic_dimension The length scale for the region between the electrodes (d) [unit: micrometer - &micro;m ]
- * @todo add the rest
- */
 PenningTrap::PenningTrap(double magnetic_field_strength, double applied_potential,
  double characteristic_dimension, double amplitude, double angular_frequency) {
     B_0 = magnetic_field_strength;
@@ -21,32 +13,16 @@ PenningTrap::PenningTrap(double magnetic_field_strength, double applied_potentia
     omega_V = angular_frequency;
 }
 
-/**
- * Class holding the state of the PenningTrap and methods for simulating the system
- * 
- * @param magnetic_field_strength Magnetic field strength (B_0) [unit: u / (&micro;s * e)]
- * @param applied_potential The applied potential to the elocrodes (V_0) [unit: u * &micro;m^2 / (&micro;s^2 * e) ]
- * @param characteristic_dimension The length scale for the region between the electrodes (d) [unit: micrometer - &micro;m ]
- */
 PenningTrap::PenningTrap(double magnetic_field_strength, double applied_potential,
  double characteristic_dimension) : PenningTrap(magnetic_field_strength, applied_potential, characteristic_dimension, 0, 0){
      // TODO: initialize f and omega_V in hpp?
  }
 
-/**
- * Adds particle PenningTrap
- */
+
 void PenningTrap::add_particle(Particle p){
     particles.push_back(p);
 }
-/**
- * Calculates strength of electrical field at specified postion in 3d space. (E(r)) 
- * 
- * 
- * @param r Positon in 3d space (x, y, z) [unit: micrometer - &micro;m]
- * @return (-2x, -2y, 4z). 
- * Or zero vecotor if position is outside PenningTrap (i.e if |r| > d) [unit: TODO: what's the unit?]
- */
+
 arma::vec PenningTrap::external_E_field(arma::vec& r){
     arma::vec E(3, arma::fill::zeros);
     // r.print();
@@ -59,13 +35,7 @@ arma::vec PenningTrap::external_E_field(arma::vec& r){
     return E;
 }
 
-/**
- * Calculates strength of magnetic field at specified postion in 3d space. B(r)
- * 
- * @param r Positon in 3d space (x, y, z) [unit: micrometer - &micro;m]
- * @return Calculated strength of the magneticfield field at positon (0, 0, B_0). 
- * Or zero vecotor if position is outside PenningTrap (i.e if |r| > d) [unit: u / (&micro;s * e)]
- */
+
 arma::vec PenningTrap::external_B_field(arma::vec& r){
     arma::vec B(3, arma::fill::zeros);
     if (arma::norm(r) > d) return B; // return 0 if particle is outside PenningTrap
@@ -73,13 +43,7 @@ arma::vec PenningTrap::external_B_field(arma::vec& r){
     return B;
 }
 
-/**
- * Force on particle i from particle j (agrees with force on particle j from particle i)
- * 
- * @param i Index of the particle - particles are stored in the order they were added
- * @param j Index of the particle - particles are stored in the order they were added
- * @return Vector form of coloum's law (&kappa; * q_i * q_j * (r_i - r_j) / |r_i - r_j|^3) (unit: N TODO: check)
- */
+
 arma::vec PenningTrap::force_particle(int i, int j){
     double coloumb_constant = 1.38935333e5;
     Particle p_i = particles[i];
@@ -89,24 +53,14 @@ arma::vec PenningTrap::force_particle(int i, int j){
     return coloumb_constant * p_i.q * p_j.q * (dist) / (abs_dist * abs_dist * abs_dist);
 }
 
-/**
- * Calculates the total external force on the i-th particle
- * 
- * @param i Index of the particle - particles are stored in the order they were added
- * @return q_i * external_E_field(r_i) + v_i x external_B_field(r_i)
- */
+
 arma::vec PenningTrap::total_force_external(int i){
     return particles[i].q * (external_E_field(particles[i].r) 
                         + arma::cross(particles[i].v, external_B_field(particles[i].r)));
 }
 
 
-/**
- * Calculates the total force from other particles on the i-th particle
- * 
- * @param i Index of the particle - particles are stored in the order they were added
- * @return for (j &ne; i) &sum; force_particle(i, j)
- */
+
 arma::vec PenningTrap::total_force_particles(int i){
     arma::vec force_particles(3, arma::fill::zeros);
     int n = particles.size();
@@ -118,21 +72,12 @@ arma::vec PenningTrap::total_force_particles(int i){
     return force_particles;
 }
 
-/**
- * Calculates the total force on the i-th particle
- * 
- * @param i Index of the particle - particles are stored in the order they were added
- * @return sum of external force and force from other particles
- */
+
 arma::vec PenningTrap::total_force(int i){
     return total_force_particles(i) + total_force_external(i);
 }
 
-/**
-  * Calculates the system one time step forward in time using Forward Euler
-  *
-  * @param dt The length for the time step
-  */
+
 void PenningTrap::evolve_forward_Euler(double dt){
     int n = particles.size();
     arma::vec a_i;
@@ -155,13 +100,7 @@ void PenningTrap::evolve_forward_Euler(double dt){
     }
 }
 
-/**
-  * Clears previous solutions, reserves memory and calculates the solution for 
-  * a system by evolving using forward euler repeatedly
-  *
-  * @param N The number of iterations to evolve the system
-  * @param dt The length for each time step
-  */
+
 void PenningTrap::solve_forward_Euler(int N, double dt){
     //remove previous solution and reserve memory
     solution.clear();
@@ -273,14 +212,7 @@ int PenningTrap::count_particles_in_region(){
     return count;
 }
 
-/**
- * Adds n particles with random starting position and velocity
- * 
- * Random values are sampled using Gaussian distribution, and scaled with d.
- * 
- * @param charge the charge of the particles [unit: u]
- * @param mass the mass of the particle [unit: e]
- */
+
 void PenningTrap::add_random_particles(float charge, float mass, int n){
     for (int i = 0; i < n; i++){
         arma::vec r = arma::vec(3).randn() * 0.1 * d;  // random initial position
