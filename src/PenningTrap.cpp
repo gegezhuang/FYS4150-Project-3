@@ -106,13 +106,13 @@ void PenningTrap::solve_forward_Euler(int N, double dt){
     //remove previous solution and reserve memory
     solution.clear();
     t_sol.clear();
-    solution.reserve(N);
-    t_sol.reserve(N);
+    solution.reserve(N+1);
+    t_sol.reserve(N+1);
     //add initial condition to solution
     t = 0;
     evolve_forward_Euler(0.0);
     //solve ODE
-    for (int i=0; i<N-1; i++){
+    for (int i=0; i<N; i++){
         evolve_forward_Euler(dt);
     }
 }
@@ -182,14 +182,14 @@ void PenningTrap::solve_RK4(int N, double dt){
     //remove previous solution and reserve memory
     solution.clear();
     t_sol.clear();
-    solution.reserve(N);
-    t_sol.reserve(N);
+    solution.reserve(N+1);
+    t_sol.reserve(N+1);
     //add initial condition to solution
     t = 0;
     evolve_RK4(0.0);
 
     //solve ODE
-    for (int i=0; i < N-1; i++){
+    for (int i=0; i < N; i++){
         evolve_RK4(dt);
     }
 

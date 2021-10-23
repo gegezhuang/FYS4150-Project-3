@@ -45,7 +45,7 @@ void test_runge_kutta() {
     std::vector<arma::mat> sol = pt.get_solution();
 
     ofstream ofile = get_solution_file("runge_kutta_positons_one_particle.csv");
-    for (int i = 0; i < N; i++){
+    for (int i = 0; i < N+1; i++){
         ofile << sol[i](0) << "," << sol[i](1) << "," << sol[i](2) << endl;
     }
     ofile.close();
@@ -69,7 +69,7 @@ void test_forward_euler() {
     std::vector<arma::mat> sol = pt.get_solution();
 
     ofstream ofile = get_solution_file("forward_euler_one_particle.csv");
-    for (int i = 0; i < N; i++){
+    for (int i = 0; i < N+1; i++){
         ofile << sol[i](0) << "," << sol[i](1) << "," << sol[i](2) << endl;
     }
     ofile.close();
@@ -81,15 +81,15 @@ void test_analytical() {
     arma::vec vel = { 0.0, 1.0, 0.0 };
 
     // arma::vec t = { 0.0, 0.3,  0.6, 1.0 };
-    arma::vec t(N);
-    for (auto i = 0; i < N; i++) {
+    arma::vec t(N+1);
+    for (auto i = 0; i < N+1; i++) {
         t(i) = ((double) i) * step_size;
     }
 
     std::vector<arma::vec> sol = solve_analytically(t, charge, mass, pos(0), pos(2), vel(1), B_0, V_0, d);
 
     ofstream ofile = get_solution_file("analytical_positons.csv");
-    for (int i = 0; i < N; i++) {
+    for (int i = 0; i < N+1; i++) {
         ofile << sol[0][i] << "," << sol[1][i] << "," << sol[2][i] << endl;
     }
     ofile.close();
