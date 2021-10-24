@@ -39,7 +39,7 @@ void test_runge_kutta() {
     for (long unsigned int i = 0; i < time_vec.size(); i++) {
         double t = time_vec[i];
         double t_i = ((double) i) * step_size;
-        assert (1e-10 > abs(t - t_i));
+        assert (1e-8 > fabs(t - t_i));
     }
 
     std::vector<arma::mat> sol = pt.get_solution();
