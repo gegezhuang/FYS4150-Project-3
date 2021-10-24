@@ -114,10 +114,11 @@ This means the imaginary component of the square root must have a strict equalit
 \begin{align*}
 \frac{4V_0}{d^2 B_0^2} &< \frac{q}{m},
 \end{align*}
-%
+
 if we insert our expressions for $\omega_0$ and $\omega_z^2$. This last equation gives us some opportunity to interpret how the particle should behave. The key insight it provides is perhaps that we have to balance the electrical field with that keeps the particles centered in the $z$-axis with the magnetic field that centers it in the $xy$-plane, because the electrical field also exerts an outwards-pushing force on the particle in the $xy$-plane. It also means that the higher the charge of the particle, and lower mass it has, the higher the potential applied to the terminals can be without it pushing the particle out of the trap in the $xy$-plane.
 
-The fact that the real component of the exponents has to be $0$ also lets us know something about the upper and lower bounds for the distance the particles can have from the origin in the $xy$-plane. 
+The fact that the real component of the exponents has to be $0$ also lets us know something about the upper and lower bounds for the distance the particles can have from the origin in the $xy$-plane. Breaking up the motion of the particles in to $f(t) = g(t) + h(t)$, where $g(t) = A_+e^{i\omega_+ t}$ and $h(t) = A_-e^{i\omega_- t}$, we have that $|g(t)| = |A_+|$ and $|h(t)| = |A_-|$ for all $t$. In other words, $g$ and $h$ describe circular motion in the complex plane, with radii $|A_+|$ and $|A_-|$ respectively, and center in the origin. Then the argument for finding upper and lower bounds on the distance to the origin is a simple geometric one. We get the upper bound $R_+$ if $\text{Arg}(g(t)) = \text{Arg}(h(t))$, i.e when $g(t)$ and $h(t)$ contributes in the same direction. Then clearly $|f(t)| = ||A_+| + |A_-||$, meaning $R_+ = |A_+| + |A_-|$. We get our lower bound if $g(t)$ and $h(t)$ contributes in opposite directions. Then $|f(t)| = ||A_+| - |A_-||$, so $R_- = ||A_+| - |A_-||$. % Plot?
+
 
 %TODO: Regne ut resonansfrekvens:
 for $k \in \mathcal{Z}$
@@ -126,12 +127,15 @@ $$\Im(-i \omega_\pm \Delta t) = 2 \pi k$$
 \section*{The algorithm}
 In this project we will be using Runge-Kutta 4 to solve our ODE's on the time-interval $[0, T]$, for n intervals of length h. Runge-Kutta 4 is a fourth order Runge-Kutta method with an error of $\epsilon = \mathcal{O}(h^4)$ . It is a general method for solving ODE's, but here we will adapt the algorithm to solve the equations of motion when an expression $a(r, t)$ for the acceleration is known from \ref{eq:fun_newton}. Assuming that you know the initial position $r_0$ and initial velocity $\dot{r}_0=v_0$ of a particle, we can approximate and discretise the differential equation with Runge-Kutta 4. To numerically solve the equations such that $r_i \approx r(ih)$ and $v_i \approx v(ih)$ for $i \in \{0, 1, 2, \ldots, n\}$, we use algorithm(ref TODO).
 %fikk ikke til å sette inn i algorithm-block uten at koden sluttet å kjøre
-\begin{algorithmic}
-	\State $r_0 \gets r(0)$
+
+\begin{algorithm}
+\caption{An algorithm with caption}\label{alg:cap} % TODO: Name the code box
+\begin{algorithmic}[1]
+\State $r_0 \gets r(0)$
 	\State $v_0 \gets v(0)$
 	\State $n \gets \dfrac{T}{h}$
 	\For{$i \in \{1, 2, \ldots, n\}$}
-		\State $K_{1,v} \gets a(r_i, t_i)$
+        \State $K_{1,v} \gets a(r_i, t_i)$
 		\State $K_{1,r} \gets v_i$
 		\State $K_{2,v} \gets a(r_i + \dfrac{h}{2}K_{1,v}, t_i + \dfrac{h}{2})$
 		\State $K_{2,r} \gets v_i + \dfrac{h}{2} K_{1,r}$
@@ -144,6 +148,10 @@ In this project we will be using Runge-Kutta 4 to solve our ODE's on the time-in
 	\EndFor
 	\Return{$v, r$}
 \end{algorithmic}
+\end{algorithm}
+
+	
+
 In reality, the code may be slightly more complex than what is found in the (REF) as multiple particles are able to interact with each other.
 %%% ------------------------------------------------------------------------ %%%
 % Har bare ført inn en introduksjon til problem 4, men tror problem 1-3 er helt 
