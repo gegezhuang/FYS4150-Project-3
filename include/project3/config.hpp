@@ -13,7 +13,7 @@ static double f = 2.0;
 static double omega_V = 6.0;
 
 static arma::vec pos = { 1.0, 0.0, 0.0 };
-static arma::vec vel = { 0.0, 1.0, 1.0 };
+static arma::vec vel = { 0.0, 1.0, 0.0 };
 
 
 
