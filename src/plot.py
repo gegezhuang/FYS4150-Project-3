@@ -45,7 +45,7 @@ def plot_3d_solution(ax: matplotlib.axes, filename: str, label: str):
         label: Label to put on plot.
     """
     #  _, x, y, z = get_solution(filename)
-    df = pd.read_csv(f"data/{filename}.csv")
+    df = pd.read_csv(f"../data/{filename}.csv")
     ax.plot(df.x, df.y, df.z, label=label)
 
 
@@ -122,15 +122,45 @@ def plot_3d_solution(ax: matplotlib.axes, filename: str, label: str):
 #
 
 
-def main():
+def plot_all_solutions():
     fig = plt.figure()
     ax = Axes3D(fig)
-    plot_3d_solution(ax, "analytical_positons", "a")
-    plot_3d_solution(ax, "forward_euler_one_particle", "a")
-    plot_3d_solution(ax, "runge_kutta_positons_one_particle", "a")
+    plot_3d_solution(ax, "analytical_positons", "Analytical solution")
+    plot_3d_solution(ax, "forward_euler_one_particle", "Forward Euler solution")
+    plot_3d_solution(ax, "runge_kutta_positons_one_particle", "Runge-Kutta 4 solution")
+    plt.legend()
     plt.savefig(f"output/position_estimates.pdf")
     plt.show()
 
+def plot_frequencies_rough():
+    fig, axs = plt.subplots(3,sharex=True, sharey=True)
+    filenames = ["amplitude0.100000.csv", "amplitude0.400000.csv", "amplitude0.700000.csv"]
+    for i in range(3):
+        df = pd.read_csv(f"output/{filenames[i]}")
+        df.columns = df.columns.str.replace(" ","_")
+        axs[i].plot(df.omega_V, df.particles_left, "o", markersize=2)
+    plt.savefig(f"output/particles_left_rough_grained.pdf")
+    plt.show()
+
+def plot_frequencies_fine():
+    pass
+
+message = """To plot RK4, FE and analytical solution type 'solutions'.
+To plot rough-grained scan of frequencies for particles left, type 'rough'.
+To plot fine-grained scan of frequencies for particles left, type 'fine'
+To plot all, type 'all'"""
 
 if __name__ == "__main__":
-    main()
+    print(message)
+    task = input()
+    if task == "solutions":
+        plot_all_solutions()
+    if task == "rough":
+        plot_frequencies_rough()
+    if task == "fine":
+        plot_frequencies_fine()
+    if task == "all":
+        plot_all_solutions()
+        plot_frequencies_rough()
+        plot_frequencies_fine()
+
