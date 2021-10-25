@@ -132,18 +132,25 @@ def plot_all_solutions():
     plt.savefig(f"output/position_estimates.pdf")
     plt.show()
 
+
 def plot_frequencies_rough():
-    fig, axs = plt.subplots(3,sharex=True, sharey=True)
-    filenames = ["amplitude0.100000.csv", "amplitude0.400000.csv", "amplitude0.700000.csv"]
+    fig, axs = plt.subplots(3, sharex=True, sharey=True)
+    filenames = [
+        "amplitude0.100000.csv",
+        "amplitude0.400000.csv",
+        "amplitude0.700000.csv",
+    ]
     for i in range(3):
         df = pd.read_csv(f"output/{filenames[i]}")
-        df.columns = df.columns.str.replace(" ","_")
+        df.columns = df.columns.str.replace(" ", "_")
         axs[i].plot(df.omega_V, df.particles_left, "o", markersize=2)
     plt.savefig(f"output/particles_left_rough_grained.pdf")
     plt.show()
 
+
 def plot_frequencies_fine():
     pass
+
 
 message = """To plot RK4, FE and analytical solution type 'solutions'.
 To plot rough-grained scan of frequencies for particles left, type 'rough'.
@@ -154,7 +161,9 @@ if __name__ == "__main__":
     print(message)
     task = input()
     if task == "solutions":
+        print("A")
         plot_all_solutions()
+        print("A")
     if task == "rough":
         plot_frequencies_rough()
     if task == "fine":
@@ -163,4 +172,3 @@ if __name__ == "__main__":
         plot_all_solutions()
         plot_frequencies_rough()
         plot_frequencies_fine()
-
