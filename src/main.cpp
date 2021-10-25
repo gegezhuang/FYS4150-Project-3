@@ -76,7 +76,7 @@ void simulate_resonance(double f){
     int N_omega_V = (omega_V_end - omega_V_start) / omega_V_stepsize;
 
     char buffer[50];
-    sprintf(buffer, "data/amplitude%f.csv", f);
+    sprintf(buffer, "data/particles_left_f=%f.csv", f);
     string filename = buffer;
     ofstream outfile;
     outfile.open(filename);
@@ -94,11 +94,11 @@ void simulate_resonance(double f){
 
 void simulate_resonance_fine_grained(){
     // TODO: FIND CORRECT NUMBERS
-    double omega_V_start = .446;
-    double omega_V_end = .453;
+    double omega_V_start = .436;
+    double omega_V_end = .443;
     double omega_V_stepsize = 2e-3;
     double N_omega = (omega_V_end - omega_V_start) / omega_V_stepsize;
-    double f = 0.4; //note that we are only running for one amplitude f=0.1
+    double f = 0.1; //note that we are only running for one amplitude f=0.1
 
 
     double T = 500;
