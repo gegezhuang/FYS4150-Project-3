@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from pandas.core.frame import DataFrame
 import argparse
 
 import matplotlib
@@ -48,6 +49,29 @@ def plot_3d_solution(ax: matplotlib.axes, filename: str, label: str):
     #  _, x, y, z = get_solution(filename)
     df = pd.read_csv(f"data/{filename}.csv")
     ax.plot(df.x, df.y, df.z, label=label)
+
+
+def relative_err(computed: DataFrame, expected: DataFrame):
+    return np.sqrt(
+        (computed["x"] - expected["x"]) ** 2
+        + (computed["y"] - expected["y"]) ** 2
+        + (computed["z"] - expected["z"]) ** 2
+        / (computed["x"] * 2 + computed["y"] * 2 + computed["z"] ** 2)
+    )
+
+
+def plot_error():
+    for h in ["1e-2", "5e-2", "1e-1", "5e-1", "1"]:
+        df_a = pd.read_csv("data/analyticalh=" + h + ".csv")
+        df_rk = pd.read_csv("data/rk4h=" + h + ".csv")
+        df_fe = pd.read_csv("data/feh=" + h + ".csv")
+        epsilon_rk = relative_err(df_rk, df_a)
+        # epsilon_fe = relative_err(df_fe, df_a)
+        t = np.linspace(0, 100, len(df_a))
+        plt.plot(t, epsilon_rk, label=h)
+        # plt.plot(t, epsilon_fe)
+    plt.savefig(f"data/relativeError.pdf")
+    plt.show()
 
 
 #  """Plot particles movement, and error where we have an analytical solution.
