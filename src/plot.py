@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from pandas.core.frame import DataFrame
 import seaborn as sns
 
 import matplotlib
@@ -35,7 +36,7 @@ def side_by_side_plot(infile_1, infile_2, outfile=None):
 
 
 # TODO: Axis names
-def plot_3d_solution(ax: matplotlib.axes, filename: str, label: str):
+def plot_3d_solution(ax, filename: str, label: str):
     """Plot the curve described in a file on `ax`, in 3d.
 
     Arguments:
@@ -147,12 +148,24 @@ def plot_frequencies_rough():
     plt.savefig(f"output/particles_left_rough_grained.pdf")
     plt.show()
 
+def relative_err(computed: DataFrame, expected: DataFrame):
+    return np.sqrt((computed["x"] - expected["x"]) ** 2 
+                + (computed["y"] - expected["y"]) ** 2 
+                + (computed["z"] - expected["z"]) ** 2 
+                / (computed["x"] ** 2 + computed["y"] ** 2 + computed["z"] ** 2))
+
 def plot_error():
     for h in ["1e-2", "5e-2", "1e-1", "5e-1", "1"]:
         df_a = pd.read_csv("data/analyticalh=" + h + ".csv")
         df_rk = pd.read_csv("data/rk4h=" + h + ".csv")
         df_fe = pd.read_csv("data/feh=" + h + ".csv")
-        epsilon_rk = (df_rk["x"] - df_a["x"]) ** 2 + (df_rk["y"] - df_a["y"]) ** 2 + (df_rk["z"] - df_a["z"]) ** 2 + 
+        epsilon_rk = relative_err(df_rk, df_a)
+        #epsilon_fe = relative_err(df_fe, df_a)
+        t = np.linspace(0, 100, len(df_a))
+        plt.plot(t, epsilon_rk, label=h)
+        #plt.plot(t, epsilon_fe)
+    plt.savefig(f"data/relativeError.pdf")
+    plt.show()
 
 
 def plot_frequencies_fine():
