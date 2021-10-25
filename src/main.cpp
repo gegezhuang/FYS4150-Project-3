@@ -27,8 +27,8 @@ void print_help_message() {
 }
 
 void estimate_error() {
-    double hs[5] = {1e-2, 5e-2, 1e-1, 5e-1, 1.};
-    string hstr[5] = {"1e-2", "5e-2", "1e-1", "5e-1", "1"};
+    double hs[5] = {1e-4, 5e-2, 1e-1, 5e-1, 1};
+    string hstr[5] = {"1e-4", "5e-2", "1e-1", "5e-1", "1"};
     
 
         for (int i = 0; i < 5; i++){
@@ -47,7 +47,7 @@ void estimate_error() {
         double h = hs[i];
         int N = 100 / h;
         ptRK.solve_RK4(N, h);
-        ptFE.solve_RK4(N, h);
+        ptFE.solve_forward_Euler(N, h);
         arma::vec t(N+1);
         for (auto i = 0; i < N+1; i++) {
             t(i) = ((double) i) * h;
@@ -59,7 +59,7 @@ void estimate_error() {
         for (int j = 0; j < N + 1; j++){
             outfileRK << solRK[j](0) << "," << solRK[j](1) << "," << solRK[j](2) << endl;
             outfileFE << solFE[j](0) << "," << solFE[j](1) << "," << solFE[j](2) << endl;
-            outfileAnalytical << solAnalytical[0][j] << "," << solAnalytical[1][j] << "," << solAnalytical[0][j] << endl;
+            outfileAnalytical << solAnalytical[0][j] << "," << solAnalytical[1][j] << "," << solAnalytical[2][j] << endl;
         }
         outfileRK.close();
         outfileFE.close();
