@@ -27,8 +27,8 @@ void print_help_message() {
 }
 
 void estimate_error() {
-    double hs[5] = {1e-4, 1e-2, 5e-2, 1e-1, 5e-1};
-    string hstr[5] = {"1e-4", "1e-2", "5e-2", "1e-1", "5e-1"};
+    double hs[5] = {1e-4, 5e-2, 1e-1, 5e-1, 1};
+    string hstr[5] = {"1e-4", "5e-2", "1e-1", "5e-1", "1"};
     
 
         for (int i = 0; i < 5; i++){
