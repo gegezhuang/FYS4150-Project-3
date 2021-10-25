@@ -25,6 +25,7 @@ std::vector<arma::vec> solve_analytically(arma::vec t, double q, double m,
     double omegaz2 = 2 * q * V0 / (m * pow(d, 2));
     double omegaz = sqrt(omegaz2);
 
+
     double omegap = (omega0 + sqrt(pow(omega0, 2) - 2*omegaz2))/2;
     double omegam = (omega0 - sqrt(pow(omega0, 2) - 2*omegaz2))/2;
 

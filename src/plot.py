@@ -134,10 +134,16 @@ def plot_all_solutions():
 
 def plot_frequencies_rough():
     fig, axs = plt.subplots(3,sharex=True, sharey=True)
+    fig.suptitle(r"Particles left after $500 \mu s$")
+    fig.text(0.5, 0.03, r"$\omega_V \, [MHz]$", ha='center', fontsize="small")
+    fig.text(0.04, 0.5, "#particles", va='center', rotation='vertical', fontsize="small")
     filenames = ["amplitude0.100000.csv", "amplitude0.400000.csv", "amplitude0.700000.csv"]
+    #fig.xlabel(r"$\omega_V \, [MHz]$")
+    fs = ["0,1", "0,4", "0,7"]
     for i in range(3):
         df = pd.read_csv(f"output/{filenames[i]}")
         df.columns = df.columns.str.replace(" ","_")
+        axs[i].set_title(f"Amplitude = {fs[i]}")
         axs[i].plot(df.omega_V, df.particles_left, "o", markersize=2)
     plt.savefig(f"output/particles_left_rough_grained.pdf")
     plt.show()
