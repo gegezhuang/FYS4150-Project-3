@@ -287,7 +287,6 @@ def plot_frequencies_rough():
     plt.show()
 
 
-# TODO!
 def plot_frequencies_fine():
     filenames = [
         "fine_grained_no_coulomb_interactions.csv",
@@ -307,6 +306,20 @@ def plot_frequencies_fine():
     plt.legend()
     plt.savefig(f"data/particles_left_fine_grained.pdf")
     plt.show()
+
+def plot_phase():
+    df = pd.read_csv("data/runge_kutta_positons_two_particles_without_interactions.csv")
+    h = 1e-3
+    v1_x = np.diff(df.x1) / h
+    v2_x = np.diff(df.x2) / h
+    v1_x = np.diff(df.x1) / h
+    v2_x = np.diff(df.x2) / h
+    plt.plot(df.x1[1:], v1_x, label="Particle 1")
+    plt.plot(df.x2[1:], v2_x, label="Particle 2")
+    plt.legend()
+    plt.savefig("data/phase_test.pdf")
+    plt.show()
+
 
 
 if __name__ == "__main__":
@@ -338,6 +351,12 @@ if __name__ == "__main__":
         action="store_true",
     )
     parser.add_argument(
+        "-p",
+        "--phase",
+        help="To plot phase portraits",
+        action="store_true",
+    )
+    parser.add_argument(
         "-c",
         "--converge",
         help="To plot convergence rate of the Runge-Kutta and Forward-Euler",
@@ -360,5 +379,7 @@ if __name__ == "__main__":
         plot_frequencies_fine()
     if args.error or args.all:
         plot_error()
+    if args.phase or args.all:
+        plot_phase()
     if args.converge or args.all:
         plot_convergence_rate()
