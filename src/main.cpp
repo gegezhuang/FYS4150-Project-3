@@ -59,7 +59,7 @@ void estimate_error() {
         for (int j = 0; j < N + 1; j++){
             outfileRK << solRK[j](0) << "," << solRK[j](1) << "," << solRK[j](2) << endl;
             outfileFE << solFE[j](0) << "," << solFE[j](1) << "," << solFE[j](2) << endl;
-            outfileAnalytical << solAnalytical[0][j] << "," << solAnalytical[1][j] << "," << solAnalytical[0][j] << endl;
+            outfileAnalytical << solAnalytical[0][j] << "," << solAnalytical[1][j] << "," << solAnalytical[2][j] << endl;
         }
         outfileRK.close();
         outfileFE.close();
