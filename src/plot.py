@@ -37,7 +37,7 @@ def side_by_side_plot(infile_1, infile_2, outfile=None):
 
 
 # TODO: Axis names
-def plot_3d_solution(ax: matplotlib.axes, filename: str, label: str):
+def plot_3d_solution(ax, filename: str, label: str):
     """Plot the curve described in a file on `ax`, in 3d.
 
     Arguments:
@@ -209,6 +209,12 @@ if __name__ == "__main__":
         action="store_true",
     )
     parser.add_argument(
+        "-e",
+        "--error",
+        help="To plot relative error of the Runge-Kutta and Forward-Euler",
+        action="store_true",
+    )
+    parser.add_argument(
         "-a",
         "--all",
         help="To plot all",
@@ -223,3 +229,5 @@ if __name__ == "__main__":
         plot_frequencies_rough()
     if args.fine or args.all:
         plot_frequencies_fine()
+    if args.error or args.all:
+        plot_error()
