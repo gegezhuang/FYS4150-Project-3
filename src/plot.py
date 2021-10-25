@@ -138,7 +138,6 @@ def plot_frequencies_rough():
     fig.text(0.5, 0.03, r"$\omega_V \, [MHz]$", ha='center', fontsize="small")
     fig.text(0.04, 0.5, "#particles", va='center', rotation='vertical', fontsize="small")
     filenames = ["amplitude0.100000.csv", "amplitude0.400000.csv", "amplitude0.700000.csv"]
-    #fig.xlabel(r"$\omega_V \, [MHz]$")
     fs = ["0,1", "0,4", "0,7"]
     for i in range(3):
         df = pd.read_csv(f"output/{filenames[i]}")
@@ -147,6 +146,14 @@ def plot_frequencies_rough():
         axs[i].plot(df.omega_V, df.particles_left, "o", markersize=2)
     plt.savefig(f"output/particles_left_rough_grained.pdf")
     plt.show()
+
+def plot_error():
+    for h in ["1e-2", "5e-2", "1e-1", "5e-1", "1"]:
+        df_a = pd.read_csv("data/analyticalh=" + h + ".csv")
+        df_rk = pd.read_csv("data/rk4h=" + h + ".csv")
+        df_fe = pd.read_csv("data/feh=" + h + ".csv")
+        epsilon_rk = (df_rk["x"] - df_a["x"]) ** 2 + (df_rk["y"] - df_a["y"]) ** 2 + (df_rk["z"] - df_a["z"]) ** 2 + 
+
 
 def plot_frequencies_fine():
     pass

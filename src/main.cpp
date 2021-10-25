@@ -114,7 +114,7 @@ void simulate_resonance_fine_grained(){
         PenningTrap pt(1 * 9.65e1, .0025 * 9.65e7, 500., f, omega_V, false);
         pt.add_random_particles(charge, mass, 100);
         pt.solve_RK4(N, h);
-        outfile1 << omega_V <<"," << pt.count_particles_in_region() << endl;
+        outfile1 << omega_V << "," << pt.count_particles_in_region() << endl;
     }
     outfile1.close();
 
