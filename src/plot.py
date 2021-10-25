@@ -81,7 +81,7 @@ def plot_error():
             t = np.linspace(0, 100, len(df_a))
             h = h.replace("e", "\\cdot 10^{") + "}"
             plt.plot(t, epsilon, label=fr"$h = {h}$")
-        plt.title(f"Relative error of {method_name}")
+        #  plt.title(f"Relative error of {method_name}")
         plt.ylabel("Error (log)")
         plt.xlabel("Time ($\\mu s$)")
         plt.yscale("log")
@@ -124,82 +124,9 @@ def plot_convergence_rate():
         plt.ylabel("Max absolute error (log)")
         plt.xscale("log")
         plt.yscale("log")
-        plt.title(f"Convergence rate for {method_name} ($r_{'{err}'} = {r_err:.3g}$)")
+        #  plt.title(f"Convergence rate for {method_name} ($r_{'{err}'} = {r_err:.3g}$)")
         plt.savefig(f"data/{method_name.lower().replace(' ', '_')}_convergence.pdf")
         plt.close()
-
-
-#  """Plot particles movement, and error where we have an analytical solution.
-#  """
-#
-#  import matplotlib
-#  from matplotlib import cm
-#  from mpl_toolkits.mplot3d import Axes3D
-#  import matplotlib.pyplot as plt
-#  import numpy as np
-#  import pandas as pd
-#
-#
-#  def get_solution(filename: str) -> np.ndarray:
-#      """Reads data from data/<filename>.csv.
-#
-#      Arguments:
-#          filename: Name of file in `data`-folder, without the .csv file ending.
-#                    Data must be on a format that np.read_csv can read, with the
-#                    first column being time, and the next three columns being x, y
-#                    and z positions.
-#
-#      Return:
-#          Array with all values.
-#      """
-#      #  return np.read_csv(f"data/{filename}.csv")
-#      #  import os
-#
-#      return pd.read_csv(f"data/{filename}.csv")
-#
-#
-#
-#
-#  def plot_relative_error(
-#      ax: matplotlib.axes, analytical_filename: str, numerical_filename: str, label: str
-#  ):
-#      """Plot the total relative error of numerical solution.
-#
-#      Total relative error is the sum of relative errors for each axis.
-#
-#      Arguments:
-#          ax: Axes instance to plot on.
-#          analytical_filename: Name of file to read, with analytical solution. See
-#                               the function `get_solution` for details on format.
-#          numerical_filename: Name of file to read, with numerical solution. See
-#                              the function `get_solution` for details on format.
-#          label: Label to put on plot.
-#      """
-#      t, analytical_x, analytical_y, analytical_z = get_solution(analytical_filename)
-#      _, numerical_x, numerical_y, numerical_z = get_solution(numerical_filename)
-#
-#      total_error = np.sum(
-#          relative_error(analytical_x, numerical_x)
-#          + relative_error(analytical_y, numerical_y)
-#          + relative_error(analytical_z, numerical_z),
-#          axis=0,
-#      )
-#
-#      plt.plot(t, total_error, label=label)
-#
-#
-#  def relative_error(exact: np.ndarray, approximated: np.ndarray) -> np.ndarray:
-#      """Computes the relative error.
-#
-#      Arguments:
-#          exact: Exact computed.
-#          approximated: An approximate array.
-#
-#      Return:
-#          Relative error.
-#      """
-#      return np.abs((exact - approximated) / exact)
-#
 
 
 def plot_all_solutions_one_particle():
@@ -209,9 +136,9 @@ def plot_all_solutions_one_particle():
     plot_3d_solution(ax, "runge_kutta_positons_one_particle", "Runge-Kutta 4 solution")
     plot_3d_solution(ax, "analytical_positons", "Analytical solution")
     plt.legend()
-    ax.set_title(
-        r"Simulation of particle position for $p_0=(100, 0, 100)$, $v_0=(0, 1, 0)$, $\Delta t=10^{-3}$, $N=10^5$"
-    )
+    #  ax.set_title(
+    #      r"Simulation of particle position for $p_0=(100, 0, 100)$, $v_0=(0, 1, 0)$, $\Delta t=10^{-3}$, $N=10^5$"
+    #  )
     ax.set_xlabel("x")
     ax.set_ylabel("y")
     ax.set_zlabel("z")
@@ -229,7 +156,7 @@ def plot_two_particles_2d():
         "Runge-Kutta 4 solution without interactions",
     )
     plt.legend()
-    plt.title(r"Motion of two particles in the xy-plane with and without iteraction")
+    #  plt.title(r"Motion of two particles in the xy-plane with and without iteraction")
     plt.xlabel("x")
     plt.ylabel("y")
     plt.savefig(f"data/two_particles_2d.pdf")
@@ -250,7 +177,7 @@ def plot_two_particles_3d():
         "Runge-Kutta 4 solution without interactions",
     )
     plt.legend()
-    plt.title(r"Motion of two particles in the xy-plane with and without iteraction")
+    #  plt.title(r"Motion of two particles in the xy-plane with and without iteraction")
     ax.set_xlabel("x")
     ax.set_ylabel("y")
     ax.set_zlabel("z")
@@ -266,7 +193,7 @@ def plot_all_solutions():
 
 def plot_frequencies_rough():
     fig, axs = plt.subplots(3, sharex=True, sharey=True)
-    fig.suptitle(r"Particles left after $500 \mu s$")
+    #  fig.suptitle(r"Particles left after $500 \mu s$")
     fig.text(0.5, 0.03, r"$\omega_V \, [MHz]$", ha="center", fontsize="small")
     fig.text(
         0.04, 0.5, "#particles", va="center", rotation="vertical", fontsize="small"
@@ -300,26 +227,43 @@ def plot_frequencies_fine():
         df = pd.read_csv(f"data/{filename}")
         df.columns = df.columns.str.replace(" ", "_")
         plt.plot(df.omega_V, df.particles_left, "o", markersize=8, label=legend)
-    plt.title("Fine grained simulation")
+    #  plt.title("Fine grained simulation")
     plt.xlabel("frequency")
     plt.ylabel("# of particles left in trap")
     plt.legend()
     plt.savefig(f"data/particles_left_fine_grained.pdf")
     plt.show()
 
-def plot_phase():
-    df = pd.read_csv("data/runge_kutta_positons_two_particles_without_interactions.csv")
-    h = 1e-3
-    v1_x = np.diff(df.x1) / h
-    v2_x = np.diff(df.x2) / h
-    v1_x = np.diff(df.x1) / h
-    v2_x = np.diff(df.x2) / h
-    plt.plot(df.x1[1:], v1_x, label="Particle 1")
-    plt.plot(df.x2[1:], v2_x, label="Particle 2")
-    plt.legend()
-    plt.savefig("data/phase_test.pdf")
-    plt.show()
 
+def plot_phase():
+    #  _, ax = plt.subplots(nrows=3, ncols=2)
+
+    filenames = [
+        "data/runge_kutta_positons_two_particles_without_interactions.csv",
+        "data/runge_kutta_positons_two_particles_with_interactions.csv",
+    ]
+    axises = ["x", "y", "z"]
+
+    for y, axis in enumerate(axises):
+        _, ax = plt.subplots(nrows=1, ncols=2)
+        for x, filename in enumerate(filenames):
+            df = pd.read_csv(filename)
+            h = 1e-3
+            v1_axis = np.diff(df[f"{axis}1"]) / h
+            v2_axis = np.diff(df[f"{axis}2"]) / h
+            ax[x].plot(df[f"{axis}1"][1:], v1_axis, label="Particle 1")
+            ax[x].plot(df[f"{axis}2"][1:], v2_axis, label="Particle 2")
+            ax[x].legend()
+            ax[x].set_xlabel("x")
+            ax[x].title.set_text(
+                #  f"Phase portrait ({axis}, v{axis}) {'without' if 'without' in filename else 'with'} coulomb interactions"
+                f"{'Without' if 'without' in filename else 'With'} coulomb interactions"
+            )
+            ax[x].set_ylabel("y")
+            #  plt.savefig("data/phase_test.pdf")
+        plt.tight_layout()
+        plt.savefig(f"data/phase_plots_two_particles_{axis}.pdf")
+        plt.show()
 
 
 if __name__ == "__main__":
