@@ -14,9 +14,3 @@ static double omega_V = 6.0;
 
 static arma::vec pos = { 100.0, 0.0, 100.0 };
 static arma::vec vel = { 0.0, 1.0, 0.0 };
-
-
-
-// struct config {
-// };
-// double charge, mass, B_0, V_0, d;
