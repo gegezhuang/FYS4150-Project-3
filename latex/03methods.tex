@@ -1,4 +1,6 @@
-We model the particles being trapped inside the Penning trap with ordinary differential equations (ODEs) derived from foundational physics equations. Let us quickly go through them here, before using them to argue our model is valid. The first of these equations is Newton's second law (\ref{eq:fun_newton}), which we use to say something about how our particles' velocity is changed in relation to outside forces. Here $m$ is the mass of the particle, while $r$ is its position in Euclidean space. $F_i$ is the $i$th force.
+We model the particles being trapped inside the Penning trap with ordinary differential equations (ODEs) derived from foundational physics equations. Let us quickly go through them here, before using them to argue our model is valid. The first of these equations is Newton's second law
+\\\\
+(\ref{eq:fun_newton}), which we use to say something about how our particles' velocity is changed in relation to outside forces. Here $m$ is the mass of the particle, while $r$ is its position in Euclidean space. $F_i$ is the $i$th force.
 %
 \begin{equation}
 \label{eq:fun_newton}
@@ -85,7 +87,7 @@ We then insert an expression for $\ddot y$ derived from $f$, and get
 \end{align*}
 %
 We now have two ODEs that together describe how particles behave in and around our trap. $\ddot f + i \omega_0 \dot f - 1/2 \omega_z^2 f = 0$ gives us information about the $x$-axis ($\Re(f)$) and $y$-axis ($\Im(f)$), and $\ddot z + \omega_z^2 z = 0$ describes the movement along the $z$-axis.
-
+\\\\
 Let us now analyse how our model predicts the particles will behave in the $xy$-plane. The analytical solution of our complex ODE is 
 %
 \begin{equation}
@@ -98,7 +100,7 @@ where
 \omega_\pm = \frac{\omega_0 \pm \sqrt{\omega_0^2 - 2 \omega_z^2}}{2},
 \end{equation*}
 and $A_\pm$ are constants set after inserting initial conditions.
-%
+\\\\
 If we want to trap the particles, we want $\abs{f(t)} < \infty$ even when $t \to \infty$. This means the real component of the exponent must be non-positive, in other words $\text{Re}(-i\omega_\pm) \leq 0$. It could also be that only one of our two terms have non-positive exponents, and $A$ associated with the other term is $0$, but this is highly dependent on initial conditions, and thus very unstable. To understand the relationship between our trap's parameters ($B_0$, $V_0$ and $d$) and the particle's properties ($q$ and $m$), let us expand our $\omega_\pm$-expression and solve the resulting equation.
 %
 \begin{align*}
@@ -114,50 +116,46 @@ This means the imaginary component of the square root must have a strict equalit
 \begin{align*}
 \frac{4V_0}{d^2 B_0^2} &< \frac{q}{m},
 \end{align*}
-
-if we insert our expressions for $\omega_0$ and $\omega_z^2$. This last equation gives us some opportunity to interpret how the particle should behave. The key insight it provides is perhaps that we have to balance the electrical field with that keeps the particles centered in the $z$-axis with the magnetic field that centers it in the $xy$-plane, because the electrical field also exerts an outwards-pushing force on the particle in the $xy$-plane. It also means that the higher the charge of the particle, and lower mass it has, the higher the potential applied to the terminals can be without it pushing the particle out of the trap in the $xy$-plane.
-
+%
+if we insert our expressions for $\omega_0$ and $\omega_z^2$. This last equation gives us some opportunity to interpret how the particle should behave. The key insight it provides is that the higher the charge of the particle, and lower mass it has, the higher the potential applied to the terminals can be without it pushing the particle out of the trap in the $xy$-plane.
+\\\\
 The fact that the real component of the exponents has to be $0$ also lets us know something about the upper and lower bounds for the distance the particles can have from the origin in the $xy$-plane. Breaking up the motion of the particles in to $f(t) = g(t) + h(t)$, where $g(t) = A_+e^{i\omega_+ t}$ and $h(t) = A_-e^{i\omega_- t}$, we have that $|g(t)| = |A_+|$ and $|h(t)| = |A_-|$ for all $t$. In other words, $g$ and $h$ describe circular motion in the complex plane, with radii $|A_+|$ and $|A_-|$ respectively, and center in the origin. Then the argument for finding upper and lower bounds on the distance to the origin is a simple geometric one. We get the upper bound $R_+$ if $\text{Arg}(g(t)) = \text{Arg}(h(t))$, i.e when $g(t)$ and $h(t)$ contributes in the same direction. Then clearly $|f(t)| = ||A_+| + |A_-||$, meaning $R_+ = |A_+| + |A_-|$. We get our lower bound if $g(t)$ and $h(t)$ contributes in opposite directions. Then $|f(t)| = ||A_+| - |A_-||$, so $R_- = ||A_+| - |A_-||$. % Plot?
 
-
-%TODO: Regne ut resonansfrekvens:
-for $k \in \mathcal{Z}$
-$$\Im(-i \omega_\pm \Delta t) = 2 \pi k$$
-
 \section*{The algorithm}
-In this project we will be using Runge-Kutta 4 to solve our ODE's on the time-interval $[0, T]$, for n intervals of length h. Runge-Kutta 4 is a fourth order Runge-Kutta method with an error of $\epsilon = \mathcal{O}(h^4)$ . It is a general method for solving ODE's, but here we will adapt the algorithm to solve the equations of motion when an expression $a(r, t)$ for the acceleration is known from \ref{eq:fun_newton}. Assuming that you know the initial position $r_0$ and initial velocity $\dot{r}_0=v_0$ of a particle, we can approximate and discretise the differential equation with Runge-Kutta 4. To numerically solve the equations such that $r_i \approx r(ih)$ and $v_i \approx v(ih)$ for $i \in \{0, 1, 2, \ldots, n\}$, we use algorithm(ref TODO).
-%fikk ikke til å sette inn i algorithm-block uten at koden sluttet å kjøre
+In this project we will be using Runge-Kutta 4 to solve our ODE's on the time-interval $[0, T]$, for n intervals of length h. Runge-Kutta 4 is a fourth order Runge-Kutta method with an error of $\epsilon = \mathcal{O}(h^4)$ . It is a general method for solving ODE's, but here we will adapt the algorithm to solve the equations of motion when an expression $a(r, t)$ for the acceleration is known from \ref{eq:fun_newton}. Assuming that you know the initial position $r_0$ and initial velocity $\dot{r}_0=v_0$ of a particle, we can approximate and discretise the differential equation with Runge-Kutta 4. To numerically solve the equations such that $r_i \approx r(ih)$ and $v_i \approx v(ih)$ for $i \in \{0, 1, 2, \ldots, n\}$, we use algorithm \ref{alg:RK4}.
 
-% TODO: Add these lines for a nicer plot
 \begin{algorithm}
-\caption{An algorithm with caption}\label{alg:cap} % TODO: Name the code box
+\caption{Runge-Kutta 4 for solving equations of motion}\label{alg:RK4} % TODO: Name the code box
 \begin{algorithmic}[1]
 \State $r_0 \gets r(0)$
-    \State $v_0 \gets v(0)$
-    \State $n \gets \dfrac{T}{h}$
-    \For{$i \in \{1, 2, \ldots, n\}$}
+	\State $v_0 \gets v(0)$
+	\State $n \gets \dfrac{T}{h}$
+	\For{$i \in \{0, 1, 2, \ldots, n-1\}$}
         \State $K_{1,v} \gets a(r_i, t_i)$
-        \State $K_{1,r} \gets v_i$
-        \State $K_{2,v} \gets a(r_i + \dfrac{h}{2}K_{1,v}, t_i + \dfrac{h}{2})$
-        \State $K_{2,r} \gets v_i + \dfrac{h}{2} K_{1,r}$
-        \State $K_{3,v} \gets a(r_i + \dfrac{h}{2}K_{2,v}, t_i + \dfrac{h}{2})$
-        \State $K_{3,r} \gets v_i + \dfrac{h}{2} K_{2,v}$
-        \State $K_{4, v} \gets a(r_i + hK_{3,v}, t_i+h)$
-        \State $K_{4, r} \gets v_i + hK_{3,r}$
-        \State $v_i = \dfrac{h}{6}(K_{1,v} + 2K_{2,v} + 2K_{3,v} + K_{4,v})$
-        \State $r_i = \dfrac{h}{6}(K_{1,r} + 2K_{2,r} + 2K_{3,r} + K_{4,r})$
-    \EndFor
-    \Return{$v, r$}
+		\State $K_{1,r} \gets v_i$
+		\State $K_{2,v} \gets a(r_i + \dfrac{h}{2}K_{1,v}, t_i + \dfrac{h}{2})$
+		\State $K_{2,r} \gets v_i + \dfrac{h}{2} K_{1,r}$
+		\State $K_{3,v} \gets a(r_i + \dfrac{h}{2}K_{2,v}, t_i + \dfrac{h}{2})$
+		\State $K_{3,r} \gets v_i + \dfrac{h}{2} K_{2,v}$
+		\State $K_{4, v} \gets a(r_i + hK_{3,v}, t_i+h)$
+		\State $K_{4, r} \gets v_i + hK_{3,r}$
+		\State $v_{i+1} = \dfrac{h}{6}(K_{1,v} + 2K_{2,v} + 2K_{3,v} + K_{4,v})$
+		\State $r_{i+1} = \dfrac{h}{6}(K_{1,r} + 2K_{2,r} + 2K_{3,r} + K_{4,r})$
+	\EndFor
+	\Return{$v, r$}
 \end{algorithmic}
 \end{algorithm}
 
-In reality, the code may be slightly more complex than what is found in the (REF) as multiple particles are able to interact with each other.
-%%% ------------------------------------------------------------------------ %%%
-% Har bare ført inn en introduksjon til problem 4, men tror problem 1-3 er helt 
-% ok ført nå. I problem 4 husker jeg ikke og klarer ikke finne en forklaring på
-% del 2, men del 1 har jeg kontroll på.
-% Det er litt mange ligninger og mye matte per forklaring, men det er mulig det 
-% er vanskelig å unngå. Kan hende vi kan slippe unna med mindre mellomregning 
-% da.
-%%% ------------------------------------------------------------------------ %%%
+	
 
+In reality, the code may be slightly more complex than what is found in algorithm \ref{alg:RK4} as multiple particles are able to interact with each other.
+\\ \\
+Before looking for resonance in our penning trap, we test our implementation of Runge-Kutta against the analytical solution (Appendix \ref{analytical}) and against the simpler Forward Euler method. We also use the result from here to decide on a reasonable step size $h$ in the simulation. In doing this, we provide some insight to the error convergence rate $r_\text{err}$ of the two methods.
+
+$$
+r_\text{err} = \frac{1}{4} \sum_{k = 2}^5 \frac{\log(\Delta_{\max, k}/\Delta_{\max, k-1})}{\log(h_k / h_{k-1})}
+$$
+
+with $\Delta_{\max, k} = \max_i |r_i - r_{i, \text{exact}}|$
+\\\\
+It's useful to be able to turn off coulomb interactions, so we experiment with this feature, making sure it's implemented correctly.

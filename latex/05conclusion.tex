@@ -1,0 +1,7 @@
+The first part of the results suggests that we can trust our implementation of Runge-Kutta 4, but that the hardware limitations we are working with might have meant that the results weren't as accurate as they needed to be. We analyzed the system a full $500 \mu s$ in, which meant we would need a very accurate simulation to be able to trust the result at the end.
+\\\\
+We are nevertheless satisfied with having observed resonance in our penning trap, and having found how the amplitude of the time-dependent potential interacts with this. Also seeing that accounting for coulomb interactions disrupts the resonance phenomena was interesting. 
+\\\\
+We have some suggestions for further work that could give additional insight into resonance phenomena inside idealized penning traps. In particular, it could be informative to further investigate the conditions that allow us to observe resonance in the penning trap. One could for instance repeat simulations with different amounts of particles to describe the relation between the number of particles and resonance. One could also run fine-grained scans, for frequencies $\omega_V = \dfrac{0.44}{2}, \dfrac{0.44}{3}, \dfrac{0.44}{4}, \ldots$ to check that these are resonance frequencies.
+\\\\
+Additionally, we would want to optimize and parallelize the source code, so we could realistically run the simulations with a smaller step size. 
