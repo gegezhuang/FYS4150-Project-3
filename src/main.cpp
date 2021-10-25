@@ -73,7 +73,7 @@ void simulate_resonance(double f){
     double omega_V_start = .2;
     double omega_V_end = 2.5;
     double omega_V_stepsize = .02;
-    double N = (omega_V_end - omega_V_start) / omega_V_stepsize;
+    int N_omega_V = (omega_V_end - omega_V_start) / omega_V_stepsize;
 
     char buffer[50];
     sprintf(buffer, "output/amplitude%f.csv", f);
@@ -82,7 +82,7 @@ void simulate_resonance(double f){
     outfile.open(filename);
     outfile << "omega_V,particles left" << endl;
 
-    for (int i = 0; i < N+1; i++){
+    for (int i = 0; i < N_omega_V+1; i++){
         double omega_V = omega_V_start + omega_V_stepsize * i; 
         PenningTrap pt(1 * 9.65e1, .0025 * 9.65e7, 500., f, omega_V, false);
         pt.add_random_particles(charge, mass, 100);
@@ -100,6 +100,7 @@ void simulate_resonance_fine_grained(){
     double N_omega = (omega_V_end - omega_V_start) / omega_V_stepsize;
     double f = 0.1; //note that we are only running for one amplitude f=0.1
 
+
     double T = 500;
     double h = 1e-2;
     int N = T/h;
@@ -108,7 +109,7 @@ void simulate_resonance_fine_grained(){
     outfile1.open("output/fine_grained_no_coulomb_interactions.csv");
     outfile1 << "omega_V,particles left" << endl;
 
-    for (int i=0; i<N_omega+1; i++){
+    for (int i=0; i < N_omega+1; i++){
         double omega_V = omega_V_start + omega_V_stepsize * i; 
         PenningTrap pt(1 * 9.65e1, .0025 * 9.65e7, 500., f, omega_V, false);
         pt.add_random_particles(charge, mass, 100);
