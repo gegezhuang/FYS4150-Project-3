@@ -46,7 +46,6 @@ def plot_3d_solution(ax: matplotlib.axes, filename: str, label: str):
                   details on format.
         label: Label to put on plot.
     """
-    #  _, x, y, z = get_solution(filename)
     df = pd.read_csv(f"data/{filename}.csv")
     ax.plot(df.x, df.y, df.z, label=label)
 
@@ -147,6 +146,12 @@ def plot_error():
 #
 
 
+def add_x_y_z_labels(ax):
+    plt.xlabel("x")
+    plt.ylabel("y")
+    ax.set_zlabel("z")
+
+
 def plot_all_solutions():
     fig = plt.figure()
     ax = Axes3D(fig)
@@ -154,6 +159,10 @@ def plot_all_solutions():
     plot_3d_solution(ax, "forward_euler_one_particle", "Forward Euler solution")
     plot_3d_solution(ax, "runge_kutta_positons_one_particle", "Runge-Kutta 4 solution")
     plt.legend()
+    add_x_y_z_labels(ax)
+    #  plt.xlabel("x")
+    #  plt.ylabel("y")
+    #  ax.set_zlabel("z")
     plt.savefig(f"data/position_estimates.pdf")
     plt.show()
 
@@ -199,13 +208,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "-r",
         "--rough",
-        help="To plot rough-grained scan of frequencies for particles",
+        help="To plot rough-grained scan of frequencies for particles left",
         action="store_true",
     )
     parser.add_argument(
         "-f",
         "--fine",
-        help="To plot fine-grained scan of frequencies for particles",
+        help="To plot fine-grained scan of frequencies for particles left",
         action="store_true",
     )
     parser.add_argument(
