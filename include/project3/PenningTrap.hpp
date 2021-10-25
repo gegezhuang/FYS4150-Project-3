@@ -22,8 +22,8 @@ class PenningTrap {
         * @param magnetic_field_strength Magnetic field strength (B_0) [unit: u / (&micro;s * e)]
         * @param applied_potential The applied potential to the elocrodes (V_0) [unit: u * &micro;m^2 / (&micro;s^2 * e) ]
         * @param characteristic_dimension The length scale for the region between the electrodes (d) [unit: micrometer - &micro;m ]
-        * @param amplitude @todo
-        * @param angular_frequency @todo
+        * @param amplitude Amplitude of the time-dependent potential term
+        * @param angular_frequency Frequency of the time-dependent potential term [unit: MHz]
         * @param coloumb_interactions If False, the force due to coloumb interaction between particle is ignored. Default value is true
         */
         PenningTrap(double magnetic_field_strength, double applied_potential,
@@ -65,10 +65,11 @@ class PenningTrap {
         */
         arma::vec total_force_external(int i);
         /**
-        * Calculates the total force from other particles on the i-th particle
+        * Calculates the total force from other particles on the i-th particle. 
+        * Returns zero if Coloumb interactions is to be ignored
         * 
         * @param i Index of the particle - particles are stored in the order they were added
-        * @return for (j &ne; i) &sum; force_particle(i, j)
+        * @return for (j &ne; i) &sum; force_particle(i, j) or 0 if Coloumb interactions is to be ignored 
         */
         arma::vec total_force_particles(int i);
         /**
