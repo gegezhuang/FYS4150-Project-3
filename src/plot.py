@@ -59,12 +59,19 @@ def relative_err(computed: DataFrame, expected: DataFrame):
         / (computed["x"] * 2 + computed["y"] * 2 + computed["z"] ** 2)
     )
 
+def absolute_error(computed: DataFrame, expected: DataFrame):
+    return np.sqrt(
+        (computed["x"] - expected["x"]) ** 2
+        + (computed["y"] - expected["y"]) ** 2
+        + (computed["z"] - expected["z"]) ** 2
+    )
+
 
 def plot_error():
     for filename, method_name in zip(["data/rk4h=", "data/feh="],
                                      ["Runge Kutta 4", "Forward Euler"]):
         for h in ["1e-4", "5e-2", "1e-1", "5e-1", "1"]:
-            df_a = pd.read_csv("data/analyticalh=" + h + ".csv")
+            df_a = pd.read_csv(f"data/analyticalh={h}.csv")
             df_num = pd.read_csv(f"{filename}{h}.csv")
             epsilon = relative_err(df_num, df_a)
 
@@ -78,6 +85,34 @@ def plot_error():
         plt.savefig(f"data/{method_name.lower().replace(' ', '_')}_relativeError.pdf")
         plt.close()
 
+def plot_convergence_rate():
+    for filename, method_name in zip(["data/rk4h=", "data/feh="],
+                                     ["Runge Kutta 4", "Forward Euler"]):
+
+        # Find max error for each h
+        max_delta = []
+        h_list = ["1", "5e-1", "1e-1", "5e-2", "1e-4"]
+        for h in h_list:
+            df_a = pd.read_csv(f"data/analyticalh={h}.csv")
+            df_num = pd.read_csv(f"{filename}{h}.csv")
+            delta = absolute_error(df_num, df_a)
+            max_delta.append(max(delta))
+
+        fh_list = [float(h) for h in h_list]
+
+        r_err = 1/4 * sum([
+            np.log(max_delta[i]/max_delta[i-1])/np.log(fh_list[i]/fh_list[i-1])
+            for i in range(1, 5)])
+
+        plt.plot(fh_list, max_delta)
+        plt.xlabel("Step size (log, $\\mu s$)")
+        plt.gca().invert_xaxis()
+        plt.ylabel("Max absolute error (log)")
+        plt.xscale("log")
+        plt.yscale("log")
+        plt.title(f"Convergence rate for {method_name} ($r_{'{err}'} = {r_err:.3g}$)")
+        plt.savefig(f"data/{method_name.lower().replace(' ', '_')}_convergence.pdf")
+        plt.close()
 
 #  """Plot particles movement, and error where we have an analytical solution.
 #  """
@@ -220,6 +255,12 @@ if __name__ == "__main__":
         action="store_true",
     )
     parser.add_argument(
+        "-c",
+        "--converge",
+        help="To plot convergence rate of the Runge-Kutta and Forward-Euler",
+        action="store_true",
+    )
+    parser.add_argument(
         "-a",
         "--all",
         help="To plot all",
@@ -236,3 +277,5 @@ if __name__ == "__main__":
         plot_frequencies_fine()
     if args.error or args.all:
         plot_error()
+    if args.converge or args.all:
+        plot_convergence_rate()
