@@ -2,16 +2,36 @@
 
 # Usage
 
-## During development
-To debug, use `make debug`. This will compile `src/main.cpp` with some extra flags, and open gdb to see where things went wrong.
+## C++
 
-If you want to run all the tests in `src/main_test.cpp`, use `make test`.
+To compile the c++ file `make`. This will compile `src/main.cpp` and all other `cpp`-files and `hpp`-files and run the test.
 
-If you want to compile the pdf, use `make project.pdf`, and if you want to force everything to remake, just use `make`.
+```
+Usage
+        ./runner [flags]
 
-When you have made something that needs to run before compiling `project.pdf`, add it to the `ALL_TARGET_FILES` variable in the makefile, and then make a rule to make the target file at the bottom of the makefile.
+Options:
+        -h      Show this help message
+        -t      Run all tests
+        -p10    Solves problem 9 in the problems set
+        -p10    Solves problem 10 in the problems set
+        -fg     Simulates the fine grained resonance with and without coulomb interactions
+```
 
-## After completion
-```bash
-make
+## Python
+
+```
+usage: plot.py [-h] [-s] [-r] [-f] [-e] [-p] [-c] [-a]
+
+Get plots for the simulation for the penning trap problem
+
+optional arguments:
+  -h, --help      show this help message and exit
+  -s, --solution  To plot RK4, FE and analytical solution.
+  -r, --rough     To plot rough-grained scan of frequencies for particles left
+  -f, --fine      To plot fine-grained scan of frequencies for particles left
+  -e, --error     To plot relative error of the Runge-Kutta and Forward-Euler
+  -p, --phase     To plot phase portraits
+  -c, --converge  To plot convergence rate of the Runge-Kutta and Forward-Euler
+  -a, --all       To plot all
 ```
