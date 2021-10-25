@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import argparse
 
 import matplotlib
 from matplotlib import cm
@@ -30,7 +31,7 @@ def side_by_side_plot(infile_1, infile_2, outfile=None):
 
     #  plt.legend()
     #  if outfile:
-    #      plt.savefig(f"output/{outfile.replace(' ', '_')}")
+    #      plt.savefig(f"data/{outfile.replace(' ', '_')}")
     plt.show()
 
 
@@ -45,7 +46,7 @@ def plot_3d_solution(ax: matplotlib.axes, filename: str, label: str):
         label: Label to put on plot.
     """
     #  _, x, y, z = get_solution(filename)
-    df = pd.read_csv(f"../data/{filename}.csv")
+    df = pd.read_csv(f"data/{filename}.csv")
     ax.plot(df.x, df.y, df.z, label=label)
 
 
@@ -129,7 +130,7 @@ def plot_all_solutions():
     plot_3d_solution(ax, "forward_euler_one_particle", "Forward Euler solution")
     plot_3d_solution(ax, "runge_kutta_positons_one_particle", "Runge-Kutta 4 solution")
     plt.legend()
-    plt.savefig(f"output/position_estimates.pdf")
+    plt.savefig(f"data/position_estimates.pdf")
     plt.show()
 
 
@@ -148,35 +149,53 @@ def plot_frequencies_rough():
     # fig.xlabel(r"$\omega_V \, [MHz]$")
     fs = ["0,1", "0,4", "0,7"]
     for i in range(3):
-        df = pd.read_csv(f"output/{filenames[i]}")
+        df = pd.read_csv(f"data/{filenames[i]}")
         df.columns = df.columns.str.replace(" ", "_")
         axs[i].set_title(f"Amplitude = {fs[i]}")
         axs[i].plot(df.omega_V, df.particles_left, "o", markersize=2)
-    plt.savefig(f"output/particles_left_rough_grained.pdf")
+    plt.savefig(f"data/particles_left_rough_grained.pdf")
     plt.show()
 
 
+# TODO!
 def plot_frequencies_fine():
-    pass
+    print("NOTE: Fine is not implemented yet")
 
-
-message = """To plot RK4, FE and analytical solution type 'solutions'.
-To plot rough-grained scan of frequencies for particles left, type 'rough'.
-To plot fine-grained scan of frequencies for particles left, type 'fine'
-To plot all, type 'all'"""
 
 if __name__ == "__main__":
-    print(message)
-    task = input()
-    if task == "solutions":
-        print("A")
+    parser = argparse.ArgumentParser(
+        description="Get plots for the simulation for the penning trap problem"
+    )
+    parser.add_argument(
+        "-s",
+        "--solution",
+        help="To plot RK4, FE and analytical solution.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-r",
+        "--rough",
+        help="To plot rough-grained scan of frequencies for particles",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-f",
+        "--fine",
+        help="To plot fine-grained scan of frequencies for particles",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-a",
+        "--all",
+        help="To plot all",
+        action="store_true",
+    )
+    args = parser.parse_args()
+    if not any(vars(args).values()):
+        parser.print_help()
+    if args.solution or args.all:
         plot_all_solutions()
-        print("A")
-    if task == "rough":
+    if args.rough or args.all:
         plot_frequencies_rough()
-    if task == "fine":
-        plot_frequencies_fine()
-    if task == "all":
-        plot_all_solutions()
-        plot_frequencies_rough()
+    if args.fine or args.all:
         plot_frequencies_fine()
