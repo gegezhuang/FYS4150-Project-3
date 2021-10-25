@@ -128,29 +128,28 @@ $$\Im(-i \omega_\pm \Delta t) = 2 \pi k$$
 In this project we will be using Runge-Kutta 4 to solve our ODE's on the time-interval $[0, T]$, for n intervals of length h. Runge-Kutta 4 is a fourth order Runge-Kutta method with an error of $\epsilon = \mathcal{O}(h^4)$ . It is a general method for solving ODE's, but here we will adapt the algorithm to solve the equations of motion when an expression $a(r, t)$ for the acceleration is known from \ref{eq:fun_newton}. Assuming that you know the initial position $r_0$ and initial velocity $\dot{r}_0=v_0$ of a particle, we can approximate and discretise the differential equation with Runge-Kutta 4. To numerically solve the equations such that $r_i \approx r(ih)$ and $v_i \approx v(ih)$ for $i \in \{0, 1, 2, \ldots, n\}$, we use algorithm(ref TODO).
 %fikk ikke til å sette inn i algorithm-block uten at koden sluttet å kjøre
 
+% TODO: Add these lines for a nicer plot
 \begin{algorithm}
 \caption{An algorithm with caption}\label{alg:cap} % TODO: Name the code box
 \begin{algorithmic}[1]
 \State $r_0 \gets r(0)$
-	\State $v_0 \gets v(0)$
-	\State $n \gets \dfrac{T}{h}$
-	\For{$i \in \{1, 2, \ldots, n\}$}
+    \State $v_0 \gets v(0)$
+    \State $n \gets \dfrac{T}{h}$
+    \For{$i \in \{1, 2, \ldots, n\}$}
         \State $K_{1,v} \gets a(r_i, t_i)$
-		\State $K_{1,r} \gets v_i$
-		\State $K_{2,v} \gets a(r_i + \dfrac{h}{2}K_{1,v}, t_i + \dfrac{h}{2})$
-		\State $K_{2,r} \gets v_i + \dfrac{h}{2} K_{1,r}$
-		\State $K_{3,v} \gets a(r_i + \dfrac{h}{2}K_{2,v}, t_i + \dfrac{h}{2})$
-		\State $K_{3,r} \gets v_i + \dfrac{h}{2} K_{2,v}$
-		\State $K_{4, v} \gets a(r_i + hK_{3,v}, t_i+h)$
-		\State $K_{4, r} \gets v_i + hK_{3,r}$
-		\State $v_i = \dfrac{h}{6}(K_{1,v} + 2K_{2,v} + 2K_{3,v} + K_{4,v})$
-		\State $r_i = \dfrac{h}{6}(K_{1,r} + 2K_{2,r} + 2K_{3,r} + K_{4,r})$
-	\EndFor
-	\Return{$v, r$}
+        \State $K_{1,r} \gets v_i$
+        \State $K_{2,v} \gets a(r_i + \dfrac{h}{2}K_{1,v}, t_i + \dfrac{h}{2})$
+        \State $K_{2,r} \gets v_i + \dfrac{h}{2} K_{1,r}$
+        \State $K_{3,v} \gets a(r_i + \dfrac{h}{2}K_{2,v}, t_i + \dfrac{h}{2})$
+        \State $K_{3,r} \gets v_i + \dfrac{h}{2} K_{2,v}$
+        \State $K_{4, v} \gets a(r_i + hK_{3,v}, t_i+h)$
+        \State $K_{4, r} \gets v_i + hK_{3,r}$
+        \State $v_i = \dfrac{h}{6}(K_{1,v} + 2K_{2,v} + 2K_{3,v} + K_{4,v})$
+        \State $r_i = \dfrac{h}{6}(K_{1,r} + 2K_{2,r} + 2K_{3,r} + K_{4,r})$
+    \EndFor
+    \Return{$v, r$}
 \end{algorithmic}
 \end{algorithm}
-
-	
 
 In reality, the code may be slightly more complex than what is found in the (REF) as multiple particles are able to interact with each other.
 %%% ------------------------------------------------------------------------ %%%
@@ -161,3 +160,4 @@ In reality, the code may be slightly more complex than what is found in the (REF
 % er vanskelig å unngå. Kan hende vi kan slippe unna med mindre mellomregning 
 % da.
 %%% ------------------------------------------------------------------------ %%%
+

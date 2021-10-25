@@ -23,7 +23,9 @@ void print_help_message() {
     cout << "Options:" << endl;
     cout << "\t-h\tShow this help message" << endl;
     cout << "\t-t\tRun all tests" << endl;
+    cout << "\t-p10\tSolves problem 9 in the problems set" << endl;
     cout << "\t-p10\tSolves problem 10 in the problems set" << endl;
+    cout << "\t-fg\tSimulates the fine grained resonance with and without coulomb interactions" << endl;
 }
 
 void estimate_error() {
@@ -147,7 +149,7 @@ void problem10(){
 int main(int argc, char * argv[]) {
     arma::arma_rng::set_seed(42);
 
-    if (has_flag("-h", argv, argv+argc)) print_help_message();
+    if (has_flag("-h", argv, argv+argc) || (argc == 1)) print_help_message();
     if (has_flag("-t", argv, argv+argc)) run_testing();
     if (has_flag("-p9", argv, argv+argc)) estimate_error();
     if (has_flag("-p10",argv, argv+argc)) problem10();

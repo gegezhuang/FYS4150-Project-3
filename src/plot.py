@@ -12,31 +12,6 @@ from mpl_toolkits.mplot3d import Axes3D
 sns.set()
 
 
-def side_by_side_plot(infile_1, infile_2, outfile=None):
-    fig, ax = plt.subplots(1, 2)
-    #  fig.suptitle(title)
-    df1 = pd.read_csv(infile_1)
-    df2 = pd.read_csv(infile_2)
-
-    ax[0].plot(df1.x, df1.y, df1.z)
-    #  ax[1].plot(df2.x, df2.y, df2.z)
-    #  ax[0].set_title(plot_one_title)
-    #  for x_data, y_data, label in zip(plot_one_x_data, plot_one_y_data, plot_one_labels):
-    #  sns.lineplot(x=x_data, y=y_data, label=label, ax=ax[0])
-    #  ax[0].set(xlabel=plot_one_x_label, ylabel=plot_one_y_label)
-
-    #  ax[1].set_title(plot_two_title)
-    #  for x_data, y_data, label in zip(plot_two_x_data, plot_two_y_data, plot_two_labels):
-    #  sns.lineplot(x=x_data, y=y_data, label=label, ax=ax[1])
-    #  ax[1].set(xlabel=plot_two_x_label, ylabel=plot_two_y_label)
-
-    #  plt.legend()
-    #  if outfile:
-    #      plt.savefig(f"data/{outfile.replace(' ', '_')}")
-    plt.show()
-
-
-# TODO: Axis names
 def plot_3d_solution(ax, filename: str, label: str):
     """Plot the curve described in a file on `ax`, in 3d.
 
@@ -50,6 +25,33 @@ def plot_3d_solution(ax, filename: str, label: str):
     ax.plot(df.x, df.y, df.z, label=label)
 
 
+def plot_2d_solution_two_particles(filename: str, label: str):
+    """Plot the curve described in a file on `ax`, in 3d.
+
+    Arguments:
+        filename: Name of file to read. See the function `get_solution` for
+                  details on format.
+        label: Label to put on plot.
+    """
+    df = pd.read_csv(f"data/{filename}.csv")
+    plt.plot(df.x1, df.y1, label=label + " particle 1")
+    plt.plot(df.x2, df.y2, label=label + " particle 2")
+
+
+def plot_3d_solution_two_particles(ax, filename: str, label: str):
+    """Plot the curve described in a file on `ax`, in 3d.
+
+    Arguments:
+        ax: Axes instance to plot on. Must be Axes3D.
+        filename: Name of file to read. See the function `get_solution` for
+                  details on format.
+        label: Label to put on plot.
+    """
+    df = pd.read_csv(f"data/{filename}.csv")
+    ax.plot(df.x1, df.y1, df.z1, label=label + " particle 1")
+    ax.plot(df.x2, df.y2, df.z2, label=label + " particle 2")
+
+
 def relative_err(computed: DataFrame, expected: DataFrame):
     return np.sqrt(
         (computed["x"] - expected["x"]) ** 2
@@ -57,6 +59,7 @@ def relative_err(computed: DataFrame, expected: DataFrame):
         + (computed["z"] - expected["z"]) ** 2
         / (computed["x"] * 2 + computed["y"] * 2 + computed["z"] ** 2)
     )
+
 
 def absolute_error(computed: DataFrame, expected: DataFrame):
     return np.sqrt(
@@ -67,15 +70,17 @@ def absolute_error(computed: DataFrame, expected: DataFrame):
 
 
 def plot_error():
-    for filename, method_name in zip(["data/rk4h=", "data/feh="],
-                                     ["Runge Kutta 4", "Forward Euler"]):
+    for filename, method_name in zip(
+        ["data/rk4h=", "data/feh="], ["Runge Kutta 4", "Forward Euler"]
+    ):
         for h in ["1e-4", "5e-2", "1e-1", "5e-1", "1"]:
             df_a = pd.read_csv(f"data/analyticalh={h}.csv")
             df_num = pd.read_csv(f"{filename}{h}.csv")
             epsilon = relative_err(df_num, df_a)
 
             t = np.linspace(0, 100, len(df_a))
-            plt.plot(t, epsilon, label=h)
+            h = h.replace("e", "\\cdot 10^{") + "}"
+            plt.plot(t, epsilon, label=fr"$h = {h}$")
         plt.title(f"Relative error of {method_name}")
         plt.ylabel("Error (log)")
         plt.xlabel("Time ($\\mu s$)")
@@ -84,9 +89,11 @@ def plot_error():
         plt.savefig(f"data/{method_name.lower().replace(' ', '_')}_relativeError.pdf")
         plt.close()
 
+
 def plot_convergence_rate():
-    for filename, method_name in zip(["data/rk4h=", "data/feh="],
-                                     ["Runge Kutta 4", "Forward Euler"]):
+    for filename, method_name in zip(
+        ["data/rk4h=", "data/feh="], ["Runge Kutta 4", "Forward Euler"]
+    ):
 
         # Find max error for each h
         max_delta = []
@@ -99,9 +106,17 @@ def plot_convergence_rate():
 
         fh_list = [float(h) for h in h_list]
 
-        r_err = 1/4 * sum([
-            np.log(max_delta[i]/max_delta[i-1])/np.log(fh_list[i]/fh_list[i-1])
-            for i in range(1, 5)])
+        r_err = (
+            1
+            / 4
+            * sum(
+                [
+                    np.log(max_delta[i] / max_delta[i - 1])
+                    / np.log(fh_list[i] / fh_list[i - 1])
+                    for i in range(1, 5)
+                ]
+            )
+        )
 
         plt.plot(fh_list, max_delta)
         plt.xlabel("Step size (log, $\\mu s$)")
@@ -112,6 +127,7 @@ def plot_convergence_rate():
         plt.title(f"Convergence rate for {method_name} ($r_{'{err}'} = {r_err:.3g}$)")
         plt.savefig(f"data/{method_name.lower().replace(' ', '_')}_convergence.pdf")
         plt.close()
+
 
 #  """Plot particles movement, and error where we have an analytical solution.
 #  """
@@ -186,25 +202,66 @@ def plot_convergence_rate():
 #
 
 
-def add_x_y_z_labels(ax):
+def plot_all_solutions_one_particle():
+    fig = plt.figure()
+    ax = Axes3D(fig)
+    plot_3d_solution(ax, "forward_euler_one_particle", "Forward Euler solution")
+    plot_3d_solution(ax, "runge_kutta_positons_one_particle", "Runge-Kutta 4 solution")
+    plot_3d_solution(ax, "analytical_positons", "Analytical solution")
+    plt.legend()
+    ax.set_title(
+        r"Simulation of particle position for $p_0=(100, 0, 100)$, $v_0=(0, 1, 0)$, $\Delta t=10^{-3}$, $N=10^5$"
+    )
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    ax.set_zlabel("z")
+    plt.savefig(f"data/position_estimates.pdf")
+    plt.show()
+
+
+def plot_two_particles_2d():
+    plot_2d_solution_two_particles(
+        "runge_kutta_positons_two_particles_with_interactions",
+        "Runge-Kutta 4 solution with interactions",
+    )
+    plot_2d_solution_two_particles(
+        "runge_kutta_positons_two_particles_without_interactions",
+        "Runge-Kutta 4 solution without interactions",
+    )
+    plt.legend()
+    plt.title(r"Motion of two particles in the xy-plane with and without iteraction")
     plt.xlabel("x")
     plt.ylabel("y")
+    plt.savefig(f"data/two_particles_2d.pdf")
+    plt.show()
+
+
+def plot_two_particles_3d():
+    fig = plt.figure()
+    ax = Axes3D(fig)
+    plot_3d_solution_two_particles(
+        ax,
+        "runge_kutta_positons_two_particles_with_interactions",
+        "Runge-Kutta 4 solution with interactions",
+    )
+    plot_3d_solution_two_particles(
+        ax,
+        "runge_kutta_positons_two_particles_without_interactions",
+        "Runge-Kutta 4 solution without interactions",
+    )
+    plt.legend()
+    plt.title(r"Motion of two particles in the xy-plane with and without iteraction")
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
     ax.set_zlabel("z")
+    plt.savefig(f"data/two_particles_3d.pdf")
+    plt.show()
 
 
 def plot_all_solutions():
-    fig = plt.figure()
-    ax = Axes3D(fig)
-    plot_3d_solution(ax, "analytical_positons", "Analytical solution")
-    plot_3d_solution(ax, "forward_euler_one_particle", "Forward Euler solution")
-    plot_3d_solution(ax, "runge_kutta_positons_one_particle", "Runge-Kutta 4 solution")
-    plt.legend()
-    add_x_y_z_labels(ax)
-    #  plt.xlabel("x")
-    #  plt.ylabel("y")
-    #  ax.set_zlabel("z")
-    plt.savefig(f"data/position_estimates.pdf")
-    plt.show()
+    plot_all_solutions_one_particle()
+    plot_two_particles_2d()
+    plot_two_particles_3d()
 
 
 def plot_frequencies_rough():
@@ -215,9 +272,9 @@ def plot_frequencies_rough():
         0.04, 0.5, "#particles", va="center", rotation="vertical", fontsize="small"
     )
     filenames = [
-        "amplitude0.100000.csv",
-        "amplitude0.400000.csv",
-        "amplitude0.700000.csv",
+        "particles_left_f=0.100000.csv",
+        "particles_left_f=0.400000.csv",
+        "particles_left_f=0.700000.csv",
     ]
     # fig.xlabel(r"$\omega_V \, [MHz]$")
     fs = ["0,1", "0,4", "0,7"]
@@ -232,7 +289,24 @@ def plot_frequencies_rough():
 
 # TODO!
 def plot_frequencies_fine():
-    print("NOTE: Fine is not implemented yet")
+    filenames = [
+        "fine_grained_no_coulomb_interactions.csv",
+        "fine_grained_with_coulomb_interactions.csv",
+    ]
+    legends = [
+        "No coulomb interactions",
+        "With coulomb interactions",
+    ]
+    for filename, legend in zip(filenames, legends):
+        df = pd.read_csv(f"data/{filename}")
+        df.columns = df.columns.str.replace(" ", "_")
+        plt.plot(df.omega_V, df.particles_left, "o", markersize=8, label=legend)
+    plt.title("Fine grained simulation")
+    plt.xlabel("frequency")
+    plt.ylabel("# of particles left in trap")
+    plt.legend()
+    plt.savefig(f"data/particles_left_fine_grained.pdf")
+    plt.show()
 
 
 if __name__ == "__main__":
