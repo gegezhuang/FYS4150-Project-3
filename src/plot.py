@@ -61,17 +61,22 @@ def relative_err(computed: DataFrame, expected: DataFrame):
 
 
 def plot_error():
-    for h in ["1e-2", "5e-2", "1e-1", "5e-1", "1"]:
-        df_a = pd.read_csv("data/analyticalh=" + h + ".csv")
-        df_rk = pd.read_csv("data/rk4h=" + h + ".csv")
-        df_fe = pd.read_csv("data/feh=" + h + ".csv")
-        epsilon_rk = relative_err(df_rk, df_a)
-        # epsilon_fe = relative_err(df_fe, df_a)
-        t = np.linspace(0, 100, len(df_a))
-        plt.plot(t, epsilon_rk, label=h)
-        # plt.plot(t, epsilon_fe)
-    plt.savefig(f"data/relativeError.pdf")
-    plt.show()
+    for filename, method_name in zip(["data/rk4h=", "data/feh="],
+                                     ["Runge Kutta 4", "Forward Euler"]):
+        for h in ["1e-4", "5e-2", "1e-1", "5e-1", "1"]:
+            df_a = pd.read_csv("data/analyticalh=" + h + ".csv")
+            df_num = pd.read_csv(f"{filename}{h}.csv")
+            epsilon = relative_err(df_num, df_a)
+
+            t = np.linspace(0, 100, len(df_a))
+            plt.plot(t, epsilon, label=h)
+        plt.title(f"Relative error of {method_name}")
+        plt.ylabel("Error (log)")
+        plt.xlabel("Time ($\\mu s$)")
+        plt.yscale("log")
+        plt.legend()
+        plt.savefig(f"data/{method_name.lower().replace(' ', '_')}_relativeError.pdf")
+        plt.close()
 
 
 #  """Plot particles movement, and error where we have an analytical solution.
